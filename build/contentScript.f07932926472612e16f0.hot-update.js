@@ -3,9 +3,9 @@ self["webpackHotUpdatechrome_extension_boilerplate_react"]("contentScript",{},
 /******/ function(__webpack_require__) { // webpackRuntimeModules
 /******/ /* webpack/runtime/getFullHash */
 /******/ (() => {
-/******/ 	__webpack_require__.h = () => ("eeaa1f68a38a1a7b02a8")
+/******/ 	__webpack_require__.h = () => ("fea561c1751aeb35589e")
 /******/ })();
 /******/ 
 /******/ }
 );
-//# sourceMappingURL=contentScript.c280d1e03a3f7bc0938d.hot-update.js.map
+//# sourceMappingURL=contentScript.f07932926472612e16f0.hot-update.js.map

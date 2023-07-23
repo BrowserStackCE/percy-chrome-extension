@@ -16,11 +16,16 @@ var automated_capture;
 // Function to inject the dialog box into the page
 function injectDialogBox(tab) {
   const tabTitle = tab.title;
+  const tabID = tab.id;
   chrome.scripting.executeScript({
     target: {
-      tabId: tab.id
+      tabId: tabID
     },
-    func: tabTitle => {
+    func: (tabTitle, tabID) => {
+      var title = tabTitle;
+      const getDialogMessage = title => {
+        return `Capturing snapshot with the default tab title:${title}!`;
+      };
       const dialogBox = document.createElement('div');
       dialogBox.setAttribute('style', `
         position: fixed;
@@ -39,28 +44,83 @@ function injectDialogBox(tab) {
       const content = document.createElement('div');
       content.style.flex = '1';
       const message = document.createElement('p');
-      message.textContent = `Capturing snapshot with the default tab title:${tabTitle}!`;
+      message.textContent = getDialogMessage(title);
       content.appendChild(message);
+
+      // this is a confirm button
+      // the workflow can be upgraded by including a timer to capture it automatically if not interacted
+
       const confirmButton = document.createElement('button');
       confirmButton.textContent = 'Confirm';
       confirmButton.addEventListener('click', () => {
-        chrome.runtime.sendMessage({
-          action: 'snapshot',
-          name: tabTitle
+        //add this to percy css if the diolog box is visible in the snapshot
+        chrome.storage.local.get('snapshots', function (result) {
+          var value = result.snapshots;
+          console.log('Value retrieved from localStorage:', value);
+          //if value is not undefined
+          if (value != undefined && value[data.name] != undefined) {
+            //ADVANCED - Provide an override button
+            const warning = document.createElement('p');
+            warning.textContent = '!!!Provide a unique snapshot name!!!';
+            document.body.prepend(warning);
+          } else {
+            dialogBox.style.display = 'none';
+            chrome.runtime.sendMessage({
+              action: 'snapshot',
+              name: title
+            });
+          }
         });
-        dialogBox.style.display = 'none';
       });
       content.appendChild(confirmButton);
+      const editButton = document.createElement('button');
+      editButton.textContent = 'Edit';
+      editButton.addEventListener('click', () => {
+        // Create and display an input field
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.value = title; // Set the initial value to the current title
+        content.insertBefore(input, message); // Insert the input before the message
+
+        // Replace the message with the input field
+        content.removeChild(message);
+
+        // Hide the "Edit" button
+        editButton.style.display = 'none';
+
+        // Create and display the "Save" button
+        const saveButton = document.createElement('button');
+        saveButton.textContent = 'Save';
+        content.appendChild(saveButton);
+        saveButton.addEventListener('click', () => {
+          // Get the updated title from the input field
+          title = input.value;
+          // Replace the input field with the updated message
+          content.removeChild(input);
+          content.insertBefore(message, editButton);
+
+          // Update the message with the updated title
+          message.textContent = getDialogMessage(title);
+          // Show the "Edit" button again
+          editButton.style.display = 'block';
+
+          // Remove the "Save" button
+          content.removeChild(saveButton);
+        });
+      });
+      content.appendChild(editButton);
       const closeButton = document.createElement('button');
       closeButton.textContent = 'Close';
       closeButton.addEventListener('click', () => {
         dialogBox.style.display = 'none';
+        //should stop the capture timer here, and prevent screencapture
       });
+
       content.appendChild(closeButton);
       dialogBox.appendChild(content);
       document.body.prepend(dialogBox);
     },
-    args: [tabTitle]
+    args: [tabTitle, tabID]
   });
 }
 chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
@@ -68,8 +128,7 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
   //All the action Key words needs to stored in a cetrailized store/module
   if (message.action === 'snapshot') {
     percySnapshot(message.name);
-  }
-  if (message.action === 'toggle_capture') {
+  } else if (message.action === 'toggle_capture') {
     automated_capture = message.state;
   }
   // Process the message or send a response if needed
@@ -241,7 +300,6 @@ async function percySnapshot(snapshotName) {
     console.log('Value retrieved from localStorage:', value);
     //if value is not undefined
     if (value != undefined) {
-      console.log(value);
       value[data.name] = {
         percyData: data,
         screenshot: ss
@@ -322,9 +380,9 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /******/ function(__webpack_require__) { // webpackRuntimeModules
 /******/ /* webpack/runtime/getFullHash */
 /******/ (() => {
-/******/ 	__webpack_require__.h = () => ("eeaa1f68a38a1a7b02a8")
+/******/ 	__webpack_require__.h = () => ("fea561c1751aeb35589e")
 /******/ })();
 /******/ 
 /******/ }
 );
-//# sourceMappingURL=background.c280d1e03a3f7bc0938d.hot-update.js.map
+//# sourceMappingURL=background.f07932926472612e16f0.hot-update.js.map
