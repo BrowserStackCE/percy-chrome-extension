@@ -2,10 +2,11 @@
 var automated_capture;
 
 // Function to inject the dialog box into the page
-function injectDialogBox(tabId) {
+function injectDialogBox(tab) {
+  const tabTitle = tab.title;
   chrome.scripting.executeScript({
-    target: { tabId: tabId },
-    func: () => {
+    target: { tabId: tab.id },
+    func: (tabTitle) => {
       const dialogBox = document.createElement('div');
       dialogBox.setAttribute(
         'style',
@@ -15,31 +16,48 @@ function injectDialogBox(tabId) {
         left: 0;
         width: 100%;
         background-color: #fff;
-        padding: 10px;
+        padding: 1px;
         z-index: 9999;
         border-bottom: 1px solid #ccc;
+        display: flex;
+        align-items: center;
       `
       );
 
       // Add your dialog box content here
-      dialogBox.innerHTML = `
-        <p>Hello, this is a dialog box!</p>
-        <button id="closeDialog">Close</button>
-      `;
+      const content = document.createElement('div');
+      content.style.flex = '1';
 
-      document.body.prepend(dialogBox);
+      const message = document.createElement('p');
+      message.textContent = `Capturing snapshot with the default tab title:${tabTitle}!`;
+      content.appendChild(message);
 
-      // Add event listener to the close button
-      const closeButton = document.getElementById('closeDialog');
+      const confirmButton = document.createElement('button');
+      confirmButton.textContent = 'Confirm';
+      confirmButton.addEventListener('click', () => {
+        chrome.runtime.sendMessage({ action: 'snapshot', name: tabTitle });
+        dialogBox.style.display = 'none';
+      });
+      content.appendChild(confirmButton);
+
+      const closeButton = document.createElement('button');
+      closeButton.textContent = 'Close';
       closeButton.addEventListener('click', () => {
         dialogBox.style.display = 'none';
       });
+      content.appendChild(closeButton);
+
+      dialogBox.appendChild(content);
+
+      document.body.prepend(dialogBox);
     },
+    args: [tabTitle],
   });
 }
 
 chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
   console.log('Message received in the background script:', message.action);
+  //All the action Key words needs to stored in a cetrailized store/module
   if (message.action === 'snapshot') {
     percySnapshot(message.name);
   }
@@ -96,8 +114,8 @@ function checkPageLoadComplete(tabId) {
           console.log(message.element);
         }
       });
-      injectDialogBox(tabId);
-      percySnapshot();
+      injectDialogBox(tab);
+      // percySnapshot();
       // Perform any actions you want after the page is completely loaded
       // ...
     }

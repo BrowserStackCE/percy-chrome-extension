@@ -14,12 +14,13 @@ __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ./node_modules/r
 var automated_capture;
 
 // Function to inject the dialog box into the page
-function injectDialogBox(tabId) {
+function injectDialogBox(tab) {
+  const tabTitle = tab.title;
   chrome.scripting.executeScript({
     target: {
-      tabId: tabId
+      tabId: tab.id
     },
-    func: () => {
+    func: tabTitle => {
       const dialogBox = document.createElement('div');
       dialogBox.setAttribute('style', `
         position: fixed;
@@ -27,28 +28,44 @@ function injectDialogBox(tabId) {
         left: 0;
         width: 100%;
         background-color: #fff;
-        padding: 10px;
+        padding: 1px;
         z-index: 9999;
         border-bottom: 1px solid #ccc;
+        display: flex;
+        align-items: center;
       `);
 
       // Add your dialog box content here
-      dialogBox.innerHTML = `
-        <p>Hello, this is a dialog box!</p>
-        <button id="closeDialog">Close</button>
-      `;
-      document.body.prepend(dialogBox);
-
-      // Add event listener to the close button
-      const closeButton = document.getElementById('closeDialog');
+      const content = document.createElement('div');
+      content.style.flex = '1';
+      const message = document.createElement('p');
+      message.textContent = `Capturing snapshot with the default tab title:${tabTitle}!`;
+      content.appendChild(message);
+      const confirmButton = document.createElement('button');
+      confirmButton.textContent = 'Confirm';
+      confirmButton.addEventListener('click', () => {
+        chrome.runtime.sendMessage({
+          action: 'snapshot',
+          name: tabTitle
+        });
+        dialogBox.style.display = 'none';
+      });
+      content.appendChild(confirmButton);
+      const closeButton = document.createElement('button');
+      closeButton.textContent = 'Close';
       closeButton.addEventListener('click', () => {
         dialogBox.style.display = 'none';
       });
-    }
+      content.appendChild(closeButton);
+      dialogBox.appendChild(content);
+      document.body.prepend(dialogBox);
+    },
+    args: [tabTitle]
   });
 }
 chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
   console.log('Message received in the background script:', message.action);
+  //All the action Key words needs to stored in a cetrailized store/module
   if (message.action === 'snapshot') {
     percySnapshot(message.name);
   }
@@ -104,8 +121,8 @@ function checkPageLoadComplete(tabId) {
           console.log(message.element);
         }
       });
-      injectDialogBox(tabId);
-      percySnapshot();
+      injectDialogBox(tab);
+      // percySnapshot();
       // Perform any actions you want after the page is completely loaded
       // ...
     }
@@ -305,9 +322,9 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /******/ function(__webpack_require__) { // webpackRuntimeModules
 /******/ /* webpack/runtime/getFullHash */
 /******/ (() => {
-/******/ 	__webpack_require__.h = () => ("825f52d37d2fd21f810a")
+/******/ 	__webpack_require__.h = () => ("eeaa1f68a38a1a7b02a8")
 /******/ })();
 /******/ 
 /******/ }
 );
-//# sourceMappingURL=background.1aad9c8c7ef94e4d55c1.hot-update.js.map
+//# sourceMappingURL=background.c280d1e03a3f7bc0938d.hot-update.js.map
