@@ -1,0 +1,32 @@
+body{
+    margin: 0;
+}
+
+:root{
+    --header-color: #ffffff;
+    --background-color: #ffffff;
+    --border: solid 1px rgba(0,0,0,0.1)
+}
+.popup-layout{
+    width: 300px;
+    height: auto;
+}
+
+.header{
+    background-color: var(--background-color);
+    border-bottom: var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo{
+    height: 100%;
+    width: 100px;
+    display: flex;
+    align-items: center;
+}
+
+.popup-content{
+    padding: 1rem;
+}
