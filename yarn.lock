@@ -1028,6 +1028,11 @@
     "@parcel/utils" "2.9.3"
     "nullthrows" "^1.1.1"
 
+"@percy/dom@^1.26.3":
+  "integrity" "sha512-BlYBn6zbq2icx0mjIFKUFUdgZmoP3md11UXNfLGzaIeIxWXQ0gn+nJqEm8SKxdValJ59eOiL4Hq8tRV2M8y+Gw=="
+  "resolved" "https://registry.npmjs.org/@percy/dom/-/dom-1.26.3.tgz"
+  "version" "1.26.3"
+
 "@plasmohq/consolidate@0.17.0":
   "integrity" "sha512-Na8imBnvzYPtzkK+9Uv9hPZ/oJti/0jgiQWD222SHxHw2QCVuR4KzslxXCy/rS8gGluSiTs1BGVvc3d2O6aJCA=="
   "resolved" "https://registry.npmjs.org/@plasmohq/consolidate/-/consolidate-0.17.0.tgz"
@@ -1039,6 +1044,13 @@
   "integrity" "sha512-P75g48dqOGneJ+n0AcqnLE/TYflcaPc3B7h6EopnCBBYUDnCNBMwYmKAkaf5pnhsEB0ybPS6TU1C2DTGfqaW7A=="
   "resolved" "https://registry.npmjs.org/@plasmohq/init/-/init-0.7.0.tgz"
   "version" "0.7.0"
+
+"@plasmohq/messaging@^0.5.0":
+  "integrity" "sha512-cYF750rguJDvnyJls2IHVAJTPVFtCEaMHMhnRsENfGaNqcRfXVfzwBGOABPg3k1iSBWBYLySh3Ht7QvFSnB3RQ=="
+  "resolved" "https://registry.npmjs.org/@plasmohq/messaging/-/messaging-0.5.0.tgz"
+  "version" "0.5.0"
+  dependencies:
+    "nanoid" "4.0.2"
 
 "@plasmohq/parcel-bundler@0.5.5":
   "integrity" "sha512-QCMmmfic514CfdXMJ7JMWUnqDzIHKVKyYeqPpUDsXON6JvA1yTmO5mEQSls8+5u/HpocP9QmTskQOHu3RCNX9A=="
@@ -1266,6 +1278,13 @@
     "nullthrows" "1.1.1"
     "semver" "7.5.4"
     "vue" "3.3.4"
+
+"@plasmohq/storage@^1.7.2":
+  "integrity" "sha512-N8hliSa3XJftAA5gZASKVVMbZ+jxTlNIehRTNT7rIgYhm+PNGXa1xZkuAlv+JDFIUuYMI84/xvVqivKedld73Q=="
+  "resolved" "https://registry.npmjs.org/@plasmohq/storage/-/storage-1.7.2.tgz"
+  "version" "1.7.2"
+  dependencies:
+    "pify" "6.1.0"
 
 "@pnpm/config.env-replace@^1.1.0":
   "integrity" "sha512-htyl8TWnKL7K/ESFa1oW2UB5lVDxuF5DpM7tBi6Hu2LNL3mWkIzNLG6N4zoCUP1lCKNxWy/3iu8mS8MvToGd6w=="
@@ -3425,6 +3444,11 @@
   "resolved" "https://registry.npmjs.org/nanoid/-/nanoid-3.3.6.tgz"
   "version" "3.3.6"
 
+"nanoid@4.0.2":
+  "integrity" "sha512-7ZtY5KTCNheRGfEFxnedV5zFiORN1+Y1N6zvPTnHQd8ENUvfaDBeuJDZb2bN/oXwXxu3qkTXDzy57W5vAmDTBw=="
+  "resolved" "https://registry.npmjs.org/nanoid/-/nanoid-4.0.2.tgz"
+  "version" "4.0.2"
+
 "napi-build-utils@^1.0.1":
   "integrity" "sha512-ONmRUqK7zj7DWX0D9ADe03wbwOBZxNAfF20PlGfCWQcD3+/MakShIHrMqx9YwPTfxDdF1zLeL+RGZiR9kGMLdg=="
   "resolved" "https://registry.npmjs.org/napi-build-utils/-/napi-build-utils-1.0.2.tgz"
@@ -3671,6 +3695,11 @@
   "integrity" "sha512-uB80kBFb/tfd68bVleG9T5GGsGPjJrLAUpR5PZIrhBnIaRTQRjqdJSsIKkOP6OAIFbj7GOrcudc5pNjZ+geV2g=="
   "resolved" "https://registry.npmjs.org/pify/-/pify-4.0.1.tgz"
   "version" "4.0.1"
+
+"pify@6.1.0":
+  "integrity" "sha512-KocF8ve28eFjjuBKKGvzOBGzG8ew2OqOOSxTTZhirkzH7h3BI1vyzqlR0qbfcDBve1Yzo3FVlWUAtCRrbVN8Fw=="
+  "resolved" "https://registry.npmjs.org/pify/-/pify-6.1.0.tgz"
+  "version" "6.1.0"
 
 "pirates@^4.0.1":
   "integrity" "sha512-saLsH7WeYYPiD25LDuLRRY/i+6HaPYr6G1OUlN39otzkSTxKnubR9RTxS3/Kk50s1g2JTgFwWQDQyplC5/SHZg=="
@@ -4247,7 +4276,7 @@
   dependencies:
     "@remix-run/router" "1.8.0"
 
-"react@*", "react@^16.8.0 || ^17.0.0 || ^18.0.0", "react@^18.2.0", "react@>=16.0.0", "react@>=16.11.0", "react@>=16.8", "react@>=16.9.0", "react@18.2.0":
+"react@*", "react@^16.8.0 || ^17.0.0 || ^18.0.0", "react@^16.8.6 || ^17 || ^18", "react@^18.2.0", "react@>=16.0.0", "react@>=16.11.0", "react@>=16.8", "react@>=16.9.0", "react@18.2.0":
   "integrity" "sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ=="
   "resolved" "https://registry.npmjs.org/react/-/react-18.2.0.tgz"
   "version" "18.2.0"
