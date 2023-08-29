@@ -6,7 +6,7 @@ import { Route, Routes } from 'react-router-dom'
 import { StaticRouter as Router } from "react-router-dom/server";
 import { StartView } from "~views/start.view"
 import { CaptureView } from "~views/capture.view"
-import { useRoute } from "~ hooks/use-route"
+import { useRoute } from "~hooks/use-route"
 import { SnapshotsListView } from "~views/snapshots-list.view"
 function IndexPopup() {
   const { route } = useRoute()

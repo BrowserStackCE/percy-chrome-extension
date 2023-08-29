@@ -1,7 +1,7 @@
 import { Button, Divider, Form, Input, Space } from "antd";
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { useRoute } from "~ hooks/use-route";
+import { useRoute } from "~hooks/use-route";
 
 export function SnapshotsListView() {
     const { Navigate } = useRoute()

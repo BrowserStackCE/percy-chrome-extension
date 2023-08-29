@@ -1,7 +1,7 @@
 import { sendToContentScript } from "@plasmohq/messaging";
 import { Button, Divider, Form, Input, Modal, Space } from "antd";
 import React from "react";
-import { useRoute } from "~ hooks/use-route";
+import { useRoute } from "~hooks/use-route";
 import SnapshotForm from "~components/snapshot.form";
 
 export function CaptureView() {
