@@ -6,15 +6,16 @@ import SnapshotForm from "~components/snapshot.form";
 
 export function CaptureView() {
     const { Navigate } = useRoute()
-
+    const [form] = Form.useForm()
     const actions = {
         capture: () => {
             sendToContentScript({
                 name: 'take_snapshot',
                 body:{
-                    enableJavascript: false
+                    enableJavascript: false,
+                    options: form.getFieldsValue()
                 }
-            }).then(console.log)
+            }).then(console.info)
         },
         cancelBuild: () => {
             Navigate('/')
@@ -26,7 +27,7 @@ export function CaptureView() {
 
     return (
         <React.Fragment>
-            <Form layout="vertical">
+            <Form form={form} layout="vertical">
                 <SnapshotForm />
             </Form>
             <Space className="w-100" direction="vertical">
