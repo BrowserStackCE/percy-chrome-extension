@@ -1,33 +1,41 @@
 const menuItemMap = {
-  PAGE: "Start Percy",
-  PAGE2: "Stop Percy",
-  PAGE3: "Capture Single Snapshot",
+  PAGE: "Capture Single Snapshot",
+  PAGE2: "Start Auto-Capture",
+  PAGE3: "Stop Auto-Capture",
   PAGE4: "Finalise Build",
   PAGE5: "View Snapshots"
 }
 
-let percyRunning = false
-
-const startPercyHandler = (info, tab) => {
-  console.log("Started Percy")
-  percyRunning = true
-  updateContextMenu()
+const singleSnapshotHandler = (info, tab) => {
+  console.log("Capture Single Snapshot is clicked")
 }
 
-const stopPercyHandler = (info, tab) => {
-  console.log("Stopped Percy!")
-  percyRunning = false
-  updateContextMenu()
+let autoCaptureRunning = false
+
+const startAutoCaptureHandler = (info, tab) => {
+  if (!autoCaptureRunning) {
+    console.log("Started Auto Capture...")
+    autoCaptureRunning = true
+    updateContextMenu()
+  }
+}
+
+const stopAutoCaptureHandler = (info, tab) => {
+  if (autoCaptureRunning) {
+    console.log("Stopped Auto Capture!")
+    autoCaptureRunning = false
+    updateContextMenu()
+  }
 }
 
 const updateContextMenu = () => {
   chrome.contextMenus.update(menuItemMap.PAGE2, {
-    visible: percyRunning
+    visible: !autoCaptureRunning
   })
-}
 
-const singleSnapshotHandler = (info, tab) => {
-  console.log("Capture Single Snapshot is clicked")
+  chrome.contextMenus.update(menuItemMap.PAGE3, {
+    visible: autoCaptureRunning
+  })
 }
 
 const finaliseBuildHandler = (info, tab) => {
@@ -39,9 +47,9 @@ const viewSnapshotHandler = (info, tab) => {
 }
 
 const clickHandlerMap = {
-  [menuItemMap.PAGE]: startPercyHandler,
-  [menuItemMap.PAGE2]: stopPercyHandler,
-  [menuItemMap.PAGE3]: singleSnapshotHandler,
+  [menuItemMap.PAGE]: singleSnapshotHandler,
+  [menuItemMap.PAGE2]: startAutoCaptureHandler,
+  [menuItemMap.PAGE3]: stopAutoCaptureHandler,
   [menuItemMap.PAGE4]: finaliseBuildHandler,
   [menuItemMap.PAGE5]: viewSnapshotHandler
 }
@@ -49,19 +57,19 @@ const clickHandlerMap = {
 chrome.runtime.onInstalled.addListener(() => {
   chrome.contextMenus.create({
     id: menuItemMap.PAGE,
-    title: "Start percy",
+    title: "Capture Single Snapshot",
     contexts: ["page"]
   })
 
   chrome.contextMenus.create({
     id: menuItemMap.PAGE2,
-    title: "Stop percy",
+    title: "Start Auto-Capture",
     contexts: ["page"]
   })
 
   chrome.contextMenus.create({
     id: menuItemMap.PAGE3,
-    title: "Capture single snapshot",
+    title: "Stop Auto-Capture",
     contexts: ["page"]
   })
 
@@ -86,5 +94,6 @@ chrome.runtime.onInstalled.addListener(() => {
       handler(info, tab)
     }
   })
+
   updateContextMenu()
 })

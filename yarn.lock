@@ -1056,6 +1056,11 @@
   resolved "https://registry.npmjs.org/@percy/dom/-/dom-1.26.3.tgz"
   integrity sha512-BlYBn6zbq2icx0mjIFKUFUdgZmoP3md11UXNfLGzaIeIxWXQ0gn+nJqEm8SKxdValJ59eOiL4Hq8tRV2M8y+Gw==
 
+"@percy/sdk-utils@^1.27.0":
+  version "1.27.0"
+  resolved "https://registry.npmjs.org/@percy/sdk-utils/-/sdk-utils-1.27.0.tgz"
+  integrity sha512-570hwstkXVwjtBTrZL0MXisid1WnWtc5UZU7FLeXwislNTK/0lBTbdg8a+NM+uuzm2rf3uI5Aw/rQaqfshBJPg==
+
 "@plasmohq/consolidate@0.17.0":
   version "0.17.0"
   resolved "https://registry.npmjs.org/@plasmohq/consolidate/-/consolidate-0.17.0.tgz"
