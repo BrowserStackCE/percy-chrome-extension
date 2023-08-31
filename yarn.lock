@@ -35,7 +35,7 @@
   "resolved" "https://registry.npmjs.org/@ant-design/icons-svg/-/icons-svg-4.3.0.tgz"
   "version" "4.3.0"
 
-"@ant-design/icons@^5.2.2":
+"@ant-design/icons@^5.2.2", "@ant-design/icons@^5.2.5":
   "integrity" "sha512-9Jc59v5fl5dzmxqLWtRev3dJwU7Ya9ZheoI6XmZjZiQ7PRtk77rC+Rbt7GJzAPPg43RQ4YO53RE1u8n+Et97vQ=="
   "resolved" "https://registry.npmjs.org/@ant-design/icons/-/icons-5.2.5.tgz"
   "version" "5.2.5"
@@ -1032,6 +1032,11 @@
   "integrity" "sha512-BlYBn6zbq2icx0mjIFKUFUdgZmoP3md11UXNfLGzaIeIxWXQ0gn+nJqEm8SKxdValJ59eOiL4Hq8tRV2M8y+Gw=="
   "resolved" "https://registry.npmjs.org/@percy/dom/-/dom-1.26.3.tgz"
   "version" "1.26.3"
+
+"@percy/logger@^1.27.0":
+  "integrity" "sha512-Br/qQz48X6isJOYfYYQKk7nnRV+pYTEUXYpz3MvJsVbjh799PdQ6Nd49lVvyTZrJUPXjPnR73FB6j7Kr1zmZEA=="
+  "resolved" "https://registry.npmjs.org/@percy/logger/-/logger-1.27.0.tgz"
+  "version" "1.27.0"
 
 "@plasmohq/consolidate@0.17.0":
   "integrity" "sha512-Na8imBnvzYPtzkK+9Uv9hPZ/oJti/0jgiQWD222SHxHw2QCVuR4KzslxXCy/rS8gGluSiTs1BGVvc3d2O6aJCA=="
@@ -4992,3 +4997,8 @@
   "integrity" "sha512-2eHWfjaoXgTBC2jNM1LRef62VQa0umtvRiDSk6HSzW7RvS5YtkabJrwYLLEKWBc8a5U2PTSCs+dJjUTJdlHsWQ=="
   "resolved" "https://registry.npmjs.org/yaml/-/yaml-2.3.1.tgz"
   "version" "2.3.1"
+
+"zod@^3.22.2":
+  "integrity" "sha512-wvWkphh5WQsJbVk1tbx1l1Ly4yg+XecD+Mq280uBGt9wa5BKSWf4Mhp6GmrkPixhMxmabYY7RbzlwVP32pbGCg=="
+  "resolved" "https://registry.npmjs.org/zod/-/zod-3.22.2.tgz"
+  "version" "3.22.2"

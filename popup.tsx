@@ -6,13 +6,13 @@ import { Route, Routes } from 'react-router-dom'
 import { StaticRouter as Router } from "react-router-dom/server";
 import { StartView } from "~views/start.view"
 import { CaptureView } from "~views/capture.view"
-import { useRoute } from "~hooks/use-route"
-import { SnapshotsListView } from "~views/snapshots-list.view"
+import { usePercyBuild} from "~hooks/use-percy-state"
+
 function IndexPopup() {
-  const { route } = useRoute()
+  const { build } = usePercyBuild()
   return (
     <ConfigProvider theme={theme}>
-      <Router location={route} >
+      <Router location={build ? '/capture' : '/'} >
         <Layout className="popup-layout">
           <Layout.Header className="header">
             <div className="logo">
@@ -23,7 +23,6 @@ function IndexPopup() {
             <Routes>
               <Route path="/" element={<StartView />} />
               <Route path="/capture" element={<CaptureView />} />
-              <Route path="/snapshots" element={<SnapshotsListView />} />
             </Routes>
           </Layout.Content>
         </Layout>
