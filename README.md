@@ -34,6 +34,8 @@ The easiest way to deploy your Plasmo extension is to use the built-in [bpp](htt
 
 ## Known Issues in M2 Mac
 
+After `npm install` when the plasmo development server is started with the command `npm run dev` for this project, there is possibilities that the following issues may occur:
+
 ## Issue 1
 
 If you encounter the following error:
