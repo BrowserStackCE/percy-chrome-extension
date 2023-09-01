@@ -27,6 +27,8 @@ const handler: PlasmoMessaging.MessageHandler<Snapshot> = async (req, res) => {
             await chrome.storage.local.set({ percyBuild }).then(()=>{
                 console.info("Build saved to local storage")
             })
+        }).finally(()=>{
+            res.send(null)
         })
     } catch (err) {
         console.error(err)

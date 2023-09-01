@@ -1,3 +1,4 @@
+import { sendToContentScript } from "@plasmohq/messaging";
 import { AutoCaptureCallback, StartAutoCapture, StopAutoCapture } from "~utils/auto-capture";
 const menuItemMap = {
     PAGE: "Capture Single Snapshot",
@@ -8,7 +9,8 @@ const menuItemMap = {
 }
 
 const singleSnapshotHandler = (info, tab) => {
-    console.log("Capture Single Snapshot is clicked")
+    console.log("Capture Single Snapshot is clicked");
+    sendToContentScript({name:'take_snapshot_with_modal'})
 }
 let autoCaptureRunning = false
 
@@ -69,12 +71,14 @@ chrome.contextMenus.create({
 chrome.contextMenus.create({
     id: menuItemMap.PAGE2,
     title: "Start Auto-Capture",
+    visible: autoCaptureRunning,
     contexts: ["page"]
 })
 
 chrome.contextMenus.create({
     id: menuItemMap.PAGE3,
     title: "Stop Auto-Capture",
+    visible: !autoCaptureRunning,
     contexts: ["page"]
 })
 

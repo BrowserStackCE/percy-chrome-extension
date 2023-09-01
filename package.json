@@ -10,7 +10,6 @@
     "test": "plasmo test"
   },
   "dependencies": {
-    "@esbuild/darwin-arm64": "^0.19.2",
     "@parcel/watcher": "^2.3.0",
     "@ant-design/icons": "^5.2.5",
     "@percy/dom": "^1.26.3",

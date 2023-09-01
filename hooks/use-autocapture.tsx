@@ -4,11 +4,9 @@ import { AutoCaptureCallback } from "~utils/auto-capture";
 export function useAutoCapture() {
     const [autoCapture, SetAutoCapture] = useState<boolean>(false)
     useEffect(() => {
-
         const unsub = AutoCaptureCallback((changes)=>{
             SetAutoCapture(changes.autoCapture.newValue)
         })
-
         return unsub;
     }, [])
 

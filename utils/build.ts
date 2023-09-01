@@ -26,14 +26,14 @@ export function UpdateBuild(build: PercyBuild) {
 export function PercyBuildCallback(fn: (changes) => void) {
     const callback = (changes, areaName) => {
         if (areaName == 'local') {
-            if (changes.percyBuild) {
+            if (changes.percyBuild !== undefined) {
                 fn(changes)
             }
         }
     }
     chrome.storage.local.get('percyBuild').then(({ percyBuild }) => {
         fn({
-            autoCapture: {
+            percyBuild: {
                 newValue: percyBuild
             }
         })
