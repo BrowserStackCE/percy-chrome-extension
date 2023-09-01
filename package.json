@@ -42,7 +42,7 @@
     "permissions": [
       "scripting",
       "storage",
-      "contextMenus"
+      "contextMenus",
       "activeTab"
     ]
   }

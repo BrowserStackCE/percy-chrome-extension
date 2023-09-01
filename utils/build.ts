@@ -22,3 +22,24 @@ export function UpdateBuild(build: PercyBuild) {
         console.error(err)
     }
 }
+
+export function PercyBuildCallback(fn: (changes) => void) {
+    const callback = (changes, areaName) => {
+        if (areaName == 'local') {
+            if (changes.percyBuild) {
+                fn(changes)
+            }
+        }
+    }
+    chrome.storage.local.get('percyBuild').then(({ percyBuild }) => {
+        fn({
+            autoCapture: {
+                newValue: percyBuild
+            }
+        })
+    })
+    chrome.storage.onChanged.addListener(callback);
+    return () => {
+        chrome.storage.onChanged.removeListener(callback)
+    }
+}

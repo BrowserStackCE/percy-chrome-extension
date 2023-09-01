@@ -1,23 +1,15 @@
 import { useEffect, useState } from "react";
+import { AutoCaptureCallback } from "~utils/auto-capture";
 
 export function useAutoCapture() {
     const [autoCapture, SetAutoCapture] = useState<boolean>(false)
     useEffect(() => {
-        const OnAutoCaptureChange = (changes, area) => {
-            console.log(changes)
-            if (area == 'local') {
-                if (changes?.autoCapture) {
-                    SetAutoCapture(changes.autoCapture.newValue)
-                }
-            }
-        }
-        chrome.storage.local.get({ autoCapture: false }).then(({ autoCapture }) => {
-            SetAutoCapture(autoCapture)
+
+        const unsub = AutoCaptureCallback((changes)=>{
+            SetAutoCapture(changes.autoCapture.newValue)
         })
-        chrome.storage.onChanged.addListener(OnAutoCaptureChange)
-        return () => {
-            chrome.storage.onChanged.removeListener(OnAutoCaptureChange)
-        }
+
+        return unsub;
     }, [])
 
     function ToggleAutoCapture(value?:boolean) {

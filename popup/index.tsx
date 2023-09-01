@@ -1,6 +1,6 @@
 import { ConfigProvider, Layout } from "antd"
 import Logo from "data-base64:~assets/icon.svg"
-import '~styles.scss'
+import './index.scss'
 import theme from "~theme"
 import { Route, Routes } from 'react-router-dom'
 import { StaticRouter as Router } from "react-router-dom/server";
