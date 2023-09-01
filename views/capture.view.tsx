@@ -1,27 +1,43 @@
 import { sendToContentScript } from "@plasmohq/messaging";
-import { Button, Divider, Form, Input, Modal, Space } from "antd";
-import React from "react";
-import { useRoute } from "~hooks/use-route";
+import { Button, Divider, Form, Input, message, Modal, Space } from "antd";
+import React, { useState } from "react";
 import SnapshotForm from "~components/snapshot.form";
+import { useAutoCapture } from "~hooks/use-autocapture";
+import { DeleteBuild } from "~utils/build";
 
 export function CaptureView() {
-    const { Navigate } = useRoute()
     const [form] = Form.useForm()
+    const { autoCapture, ToggleAutoCapture } = useAutoCapture()
+    const [capturing,SetCapturing] = useState(false)
     const actions = {
         capture: () => {
-            sendToContentScript({
-                name: 'take_snapshot',
-                body:{
-                    enableJavascript: false,
-                    options: form.getFieldsValue()
-                }
-            }).then(console.info)
+            SetCapturing(true)
+            form.validateFields().then(async (options)=>{
+                console.debug(`Snapshot Options: ${JSON.stringify(options, undefined, 2)}`)
+                await sendToContentScript({
+                    name: 'take_snapshot',
+                    body: options
+                }).then(() => {
+                    form.resetFields(['name']);
+                    message.success("Snapshot Captured!")
+                }).catch((err)=>{
+                    console.error(err)
+                    message.error(err)
+                })
+            }).catch(console.error).finally(()=>{
+                SetCapturing(false)
+            })
         },
         cancelBuild: () => {
-            Navigate('/')
+            DeleteBuild()
         },
         viewSnapshots: () => {
-            Navigate('/snapshots')
+            chrome.tabs.create({
+                url: "./tabs/snapshots.html"
+            })
+        },
+        toggleCapture: () => {
+            ToggleAutoCapture()
         }
     }
 
@@ -31,8 +47,8 @@ export function CaptureView() {
                 <SnapshotForm />
             </Form>
             <Space className="w-100" direction="vertical">
-                <Button onClick={actions.capture} block size="large" >Capture Snapshot</Button>
-                <Button block size="large" type="primary" >Enable Auto Capture</Button>
+                <Button loading={capturing} onClick={actions.capture} block size="large" >Capture Snapshot</Button>
+                <Button danger={autoCapture} onClick={actions.toggleCapture} block size="large" type="primary" >{autoCapture ? "Stop Auto Capture" : "Start Auto Capture"}</Button>
             </Space>
             <Divider />
             <Space className="w-100" direction="vertical" >
