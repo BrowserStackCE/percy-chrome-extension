@@ -1,105 +1,78 @@
 import { sendToContentScript } from "@plasmohq/messaging";
 import { AutoCaptureCallback, StartAutoCapture, StopAutoCapture } from "~utils/auto-capture";
-const menuItemMap = {
-    PAGE: "Capture Single Snapshot",
-    PAGE2: "Start Auto-Capture",
-    PAGE3: "Stop Auto-Capture",
-    PAGE4: "Finalise Build",
-    PAGE5: "View Snapshots"
+import { PercyBuildCallback } from "~utils/build";
+
+let autoCaptureRunning = false
+let percyEnabled = false
+
+const contextMenus = {
+    'Capture Single Snapshot': {
+        handler: () => {
+            sendToContentScript({ name: 'take_snapshot_with_modal' })
+        },
+        visible: ()=> percyEnabled
+    },
+    'Start Auto-Capture': {
+        handler: () => {
+            StartAutoCapture()
+        },
+        visible:()=> percyEnabled && !autoCaptureRunning
+    },
+    'Stop Auto-Capture': {
+        handler: () => {
+            StopAutoCapture()
+        },
+        visible: ()=> percyEnabled && autoCaptureRunning
+    },
+    'Finalise build': {
+        handler: () => {
+        },
+        visible: ()=> percyEnabled
+    },
+    'View snapshots': {
+        handler: () => {
+            chrome.tabs.create({
+                url: "./tabs/snapshots.html"
+            })
+        },
+        visible: ()=> percyEnabled
+    },
 }
 
-const singleSnapshotHandler = (info, tab) => {
-    console.log("Capture Single Snapshot is clicked");
-    sendToContentScript({name:'take_snapshot_with_modal'})
+function CreateContextMenus() {
+    Object.entries(contextMenus).forEach(([key, value]) => {
+        chrome.contextMenus.create({
+            id: key,
+            title: key,
+            visible: value.visible(),
+            contexts: ["page"] as any[]
+        })
+    })
 }
-let autoCaptureRunning = false
+
+function UpdateContextMenusVisibility(ids?: (keyof typeof contextMenus)[]) {
+    (ids || Object.keys(contextMenus)).map((key) => {
+        console.log(contextMenus[key].visible)
+        chrome.contextMenus.update(key, {
+            visible: contextMenus[key].visible()
+        })
+    })
+}
 
 AutoCaptureCallback((changes) => {
     autoCaptureRunning = changes.autoCapture.newValue
-    updateContextMenu()
+    UpdateContextMenusVisibility(["Start Auto-Capture", "Stop Auto-Capture"])
 })
 
-
-const startAutoCaptureHandler = (info, tab) => {
-    if (!autoCaptureRunning) {
-        console.log("Started Auto Capture...")
-        StartAutoCapture()
-    }
-}
-
-const stopAutoCaptureHandler = (info, tab) => {
-    if (autoCaptureRunning) {
-        console.log("Stopped Auto Capture!")
-        StopAutoCapture()
-    }
-}
-
-const updateContextMenu = () => {
-    console.log("Update Context Menu Called")
-    chrome.contextMenus.update(menuItemMap.PAGE2, {
-        visible: !autoCaptureRunning
-    })
-
-    chrome.contextMenus.update(menuItemMap.PAGE3, {
-        visible: autoCaptureRunning
-    })
-}
-
-const finaliseBuildHandler = (info, tab) => {
-    console.log("Finalise Build")
-}
-
-const viewSnapshotHandler = (info, tab) => {
-    console.log("View Snapshots is clicked")
-}
-
-const clickHandlerMap = {
-    [menuItemMap.PAGE]: singleSnapshotHandler,
-    [menuItemMap.PAGE2]: startAutoCaptureHandler,
-    [menuItemMap.PAGE3]: stopAutoCaptureHandler,
-    [menuItemMap.PAGE4]: finaliseBuildHandler,
-    [menuItemMap.PAGE5]: viewSnapshotHandler
-}
-
-
-chrome.contextMenus.create({
-    id: menuItemMap.PAGE,
-    title: "Capture Single Snapshot",
-    contexts: ["page"]
+PercyBuildCallback((changes) => {
+    percyEnabled = changes.percyBuild.newValue != false
+    console.log("PERCY ENABLED:" + percyEnabled)
+    UpdateContextMenusVisibility()
 })
 
-chrome.contextMenus.create({
-    id: menuItemMap.PAGE2,
-    title: "Start Auto-Capture",
-    visible: autoCaptureRunning,
-    contexts: ["page"]
-})
-
-chrome.contextMenus.create({
-    id: menuItemMap.PAGE3,
-    title: "Stop Auto-Capture",
-    visible: !autoCaptureRunning,
-    contexts: ["page"]
-})
-
-chrome.contextMenus.create({
-    id: menuItemMap.PAGE4,
-    title: "Finalise build",
-    contexts: ["page"]
-})
-
-chrome.contextMenus.create({
-    id: menuItemMap.PAGE5,
-    title: "View snapshots",
-    contexts: ["page"]
-})
+CreateContextMenus();
 
 chrome.contextMenus.onClicked.addListener((info, tab) => {
     const { menuItemId } = info
-
-    const handler = clickHandlerMap[menuItemId]
-
-    if (handler) {
-        handler(info, tab)
-    }
+    contextMenus[menuItemId]?.handler?.()
 })

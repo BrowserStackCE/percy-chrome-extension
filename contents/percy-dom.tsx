@@ -7,6 +7,7 @@ import theme from "~theme"
 import { useState } from "react"
 import { sendToBackground } from "@plasmohq/messaging"
 import { SnapshotOptions, SnapshotOptionsSchema } from "~schemas/snapshot"
+import { CaptureSnapshot } from "~utils/capture-snapshot"
 
 
 export const config: PlasmoCSConfig = {}
@@ -20,7 +21,7 @@ export default function SnapshotModal() {
         if (req.name === 'take_snapshot') {
             try {
                 const options = SnapshotOptionsSchema.parse(req.body)
-                actions.captureSnapshot(options)
+                CaptureSnapshot(options)
             } catch (err) {
                 console.error(err)
             }
@@ -31,22 +32,6 @@ export default function SnapshotModal() {
     })
 
     const actions = {
-        captureSnapshot: async (options: SnapshotOptions) => {
-            console.info(`Serializing the DOM`)
-            try {
-                const dom = Serialize({ enableJavascript: options['enable-javascript'] || false })
-                console.info(`DOM serialized successfully`)
-                await sendToBackground({
-                    name: "save-snapshot",
-                    body: {
-                        dom,
-                        options
-                    }
-                })
-            } catch (err) {
-                console.error(err)
-            }
-        },
         captureSnapshotWithModal: async () => {
             console.info("Capturing the snapshot")
             SetCapturing(true)
@@ -55,7 +40,7 @@ export default function SnapshotModal() {
                 SetModalOpen(false)
                 console.info(`Capturing the snapshot with options ${JSON.stringify(options)}`)
                 setTimeout(()=>{
-                    actions.captureSnapshot(options)
+                    CaptureSnapshot(options)
                 },500)
             }).finally(() => {
                 SetCapturing(false)
