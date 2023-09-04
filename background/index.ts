@@ -37,6 +37,14 @@ const contextMenus = {
         },
         visible: ()=> percyEnabled
     },
+    'Options':{
+        handler:()=>{
+            chrome.tabs.create({
+                url: "./options.html"
+            })
+        },
+        visible: ()=>true
+    }
 }
 
 function CreateContextMenus() {

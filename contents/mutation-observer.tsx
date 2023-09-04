@@ -1,6 +1,5 @@
-import { sendToContentScript } from "@plasmohq/messaging";
 import type { PlasmoCSConfig } from "plasmo"
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo } from "react"
 
 import { useAutoCapture } from "~hooks/use-autocapture"
 import { CaptureSnapshot } from "~utils/capture-snapshot";
@@ -10,9 +9,10 @@ let timeout : NodeJS.Timeout | undefined = undefined;
 var count = 0;
 export default function SnapshotModal() {
   const { autoCapture } = useAutoCapture()
-  const observer = useMemo(() => new MutationObserver((mutationList, callback) => {
+  const observer = useMemo(() => new MutationObserver((mutationList, observer) => {
     if(timeout){
       clearTimeout(timeout)
+      timeout = undefined;
     }
     timeout = setTimeout(()=>{
       CaptureSnapshot({
@@ -21,7 +21,7 @@ export default function SnapshotModal() {
         "min-height":"1024"
       })
       count++;
-    },500)
+    },1000)
   }), []);
   const targetNode = document.body // You can change this to the desired element
   const observerOptions = {

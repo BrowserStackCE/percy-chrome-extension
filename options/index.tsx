@@ -19,23 +19,6 @@ export default function ChromeExtensionOptions() {
                         </Form>
                     </Card>
                 </section>
-                <section id="autocapture-settings" >
-                    <Card title="Autocapture Settings" >
-                        <Form layout='vertical'>
-                            <List>
-                                <List.Item>
-                                    ChildList
-                                </List.Item>
-                                <List.Item>
-                                    Attributes
-                                </List.Item>
-                                <List.Item>
-                                    Character Data
-                                </List.Item>
-                            </List>
-                        </Form>
-                    </Card>
-                </section>
             </Layout.Content>
         </Layout>
     )

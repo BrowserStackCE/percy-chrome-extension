@@ -4,7 +4,7 @@ import Serialize from '@percy/dom'
 import { ConfigProvider, Form, Modal } from "antd"
 import SnapshotForm from "~components/snapshot.form"
 import theme from "~theme"
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { sendToBackground } from "@plasmohq/messaging"
 import { SnapshotOptions, SnapshotOptionsSchema } from "~schemas/snapshot"
 import { CaptureSnapshot } from "~utils/capture-snapshot"
@@ -16,6 +16,7 @@ export default function SnapshotModal() {
     const [modalOpen, SetModalOpen] = useState(false)
     const [capturing, SetCapturing] = useState(false)
     const [form] = Form.useForm()
+    const ref = useRef<HTMLDivElement>(null)
     useMessage<SnapshotOptions, void>(async (req, res) => {
         console.debug(`Received Request ${JSON.stringify(req, undefined, 2)}`)
         if (req.name === 'take_snapshot') {
@@ -26,32 +27,14 @@ export default function SnapshotModal() {
                 console.error(err)
             }
         } else if (req.name === 'take_snapshot_with_modal') {
-            SetModalOpen(true)
+            const snapshotName = prompt("Enter Snapshot Name");
+            CaptureSnapshot({
+                name:snapshotName,
+                widths:[375,1280],
+                "min-height":"1024"
+              })
         }
         res.send()
     })
-
-    const actions = {
-        captureSnapshotWithModal: async () => {
-            console.info("Capturing the snapshot")
-            SetCapturing(true)
-            form.validateFields().then(async (options) => {
-                console.info("Closing the Modal")
-                SetModalOpen(false)
-                console.info(`Capturing the snapshot with options ${JSON.stringify(options)}`)
-                setTimeout(()=>{
-                    CaptureSnapshot(options)
-                },500)
-            }).finally(() => {
-                SetCapturing(false)
-            })
-        }
-    }
-    return <ConfigProvider theme={theme} >
-        <Modal okButtonProps={{ loading: capturing }} onOk={actions.captureSnapshotWithModal} okText="Capture" onCancel={() => SetModalOpen(false)} title="Take Snapshot" open={modalOpen} >
-            <Form form={form} layout="vertical">
-                <SnapshotForm />
-            </Form>
-        </Modal>
-    </ConfigProvider>;
+    return null;
 }
