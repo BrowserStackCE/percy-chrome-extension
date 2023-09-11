@@ -10,8 +10,9 @@
     "test": "plasmo test"
   },
   "dependencies": {
-    "@parcel/watcher": "^2.3.0",
     "@ant-design/icons": "^5.2.5",
+    "@esbuild/darwin-arm64": "^0.19.2",
+    "@parcel/watcher": "^2.3.0",
     "@percy/dom": "^1.26.3",
     "@percy/logger": "^1.27.0",
     "@plasmohq/messaging": "^0.5.0",
@@ -42,7 +43,8 @@
       "scripting",
       "storage",
       "contextMenus",
-      "activeTab"
+      "activeTab",
+      "tabs"
     ]
   }
 }
