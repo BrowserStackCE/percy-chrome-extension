@@ -1,19 +1,29 @@
 import type { PlasmoMessaging } from "@plasmohq/messaging"
-import { PercyBuild } from "~schemas/build"
+
+import type { PercyBuild } from "~schemas/build"
+import { StopAutoCapture } from "~utils/auto-capture"
+import { DeleteBuild, FinaliseBuild } from "~utils/build"
+import { isPercyEnabled, stopPercy } from "~utils/percy-utils"
 
 const handler: PlasmoMessaging.MessageHandler = async (req, res) => {
-    if (req.name !== 'finalize-build') return;
+  if (req.name !== "finalize-build") return
 
-    // Check if Percy Local Server is running
-    // If percy is not running
-    /**
-     * chrome.tabs.create({
-                url: "./tabs/start-percy.html"
-            })
-     */
-    const Build = await chrome.storage.local.get('percyBuild').then((res)=>res.percyBuild as PercyBuild);
-
-    // Loop through snaphshots and upload them.
+  const Build = await chrome.storage.local
+    .get("percyBuild")
+    .then((res) => res.percyBuild as PercyBuild)
+  const buildInfo = await isPercyEnabled()
+  if (Build && buildInfo) {
+    await StopAutoCapture()
+    const {errors,success} = await FinaliseBuild(Build)
+    const stopped = await stopPercy()
+    await DeleteBuild()
+    chrome.tabs.create({
+        url:buildInfo.build.url
+    })
+  } else {
+    console.log("Percy not enabled")
+    // Docs Page
+  }
 }
 
 export default handler

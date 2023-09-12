@@ -6,7 +6,7 @@ import { Route, Routes } from 'react-router-dom'
 import { StaticRouter as Router } from "react-router-dom/server";
 import { StartView } from "~views/start.view"
 import { CaptureView } from "~views/capture.view"
-import { usePercyBuild} from "~hooks/use-percy-state"
+import { usePercyBuild } from "~hooks/use-percy-state"
 
 function IndexPopup() {
   const { build } = usePercyBuild()
@@ -15,8 +15,10 @@ function IndexPopup() {
       <Router location={build ? '/capture' : '/'} >
         <Layout className="popup-layout">
           <Layout.Header className="header">
-            <div className="logo">
-              <img src={Logo} alt="Percy | BrowserStack" />
+            <div className="content">
+              <div className="logo">
+                <img src={Logo} alt="Percy | BrowserStack" />
+              </div>
             </div>
           </Layout.Header>
           <Layout.Content className="popup-content">

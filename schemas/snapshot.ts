@@ -15,6 +15,8 @@ export const SnapshotSchema = z.object({
         "min-height": "1024",
         "enable-javascript": false
     }),
+    url: z.string().url(),
+    headers: z.record(z.string()).optional(),
     screenshot: z.string().optional()
 })
 

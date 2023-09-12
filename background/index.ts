@@ -10,24 +10,24 @@ const contextMenus = {
         handler: () => {
             sendToContentScript({ name: 'take_snapshot_with_modal' })
         },
-        visible: ()=> percyEnabled
+        visible: () => percyEnabled
     },
     'Start Auto-Capture': {
         handler: () => {
             StartAutoCapture()
         },
-        visible:()=> percyEnabled && !autoCaptureRunning
+        visible: () => percyEnabled && !autoCaptureRunning
     },
     'Stop Auto-Capture': {
         handler: () => {
             StopAutoCapture()
         },
-        visible: ()=> percyEnabled && autoCaptureRunning
+        visible: () => percyEnabled && autoCaptureRunning
     },
     'Finalise build': {
         handler: () => {
         },
-        visible: ()=> percyEnabled
+        visible: () => percyEnabled
     },
     'View snapshots': {
         handler: () => {
@@ -35,15 +35,15 @@ const contextMenus = {
                 url: "./tabs/snapshots.html"
             })
         },
-        visible: ()=> percyEnabled
+        visible: () => percyEnabled
     },
-    'Options':{
-        handler:()=>{
+    'Options': {
+        handler: () => {
             chrome.tabs.create({
                 url: "./options.html"
             })
         },
-        visible: ()=>true
+        visible: () => true
     }
 }
 
@@ -84,3 +84,16 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
     const { menuItemId } = info
     contextMenus[menuItemId]?.handler?.()
 })
+
+
+chrome.webRequest.onBeforeSendHeaders.addListener((details) => {
+    chrome.storage.session.set({
+        [details.url]:details.requestHeaders.reduce((val,header)=>{
+            val[header.name] = header.value
+            return val;
+        },{})
+    })
+}, {
+    types: ['main_frame'],
+    urls: ['<all_urls>'],
+},['requestHeaders'])

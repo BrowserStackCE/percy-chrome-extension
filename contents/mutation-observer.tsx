@@ -10,6 +10,10 @@ var count = 0;
 export default function SnapshotModal() {
   const { autoCapture } = useAutoCapture()
   const observer = useMemo(() => new MutationObserver((mutationList, observer) => {
+    mutationList = mutationList.filter((record)=>!(record.target as Element).classList.contains('percy-extension-snapshot-message'))
+    if(mutationList.length <= 0){
+      return;
+    }
     if(timeout){
       clearTimeout(timeout)
       timeout = undefined;

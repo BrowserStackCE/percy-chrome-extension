@@ -1,4 +1,4 @@
-import { sendToContentScript } from "@plasmohq/messaging";
+import { sendToBackground, sendToContentScript } from "@plasmohq/messaging";
 import { Button, Divider, Form, Input, message, Modal, Space } from "antd";
 import React, { useState } from "react";
 import SnapshotForm from "~components/snapshot.form";
@@ -9,6 +9,7 @@ export function CaptureView() {
     const [form] = Form.useForm()
     const { autoCapture, ToggleAutoCapture } = useAutoCapture()
     const [capturing,SetCapturing] = useState(false)
+    const [finalizing,SetFinalising] = useState(false)
     const actions = {
         capture: () => {
             SetCapturing(true)
@@ -19,7 +20,6 @@ export function CaptureView() {
                     body: options
                 }).then(() => {
                     form.resetFields(['name']);
-                    message.success("Snapshot Captured!")
                 }).catch((err)=>{
                     console.error(err)
                     message.error(err)
@@ -38,6 +38,14 @@ export function CaptureView() {
         },
         toggleCapture: () => {
             ToggleAutoCapture()
+        },
+        finaliseBuild:()=>{
+            SetFinalising(true)
+            sendToBackground({name:'finalize-build'}).finally(()=>{
+                SetFinalising(false)
+            }).then(()=>{
+                
+            })
         }
     }
 
@@ -53,7 +61,7 @@ export function CaptureView() {
             <Divider />
             <Space className="w-100" direction="vertical" >
                 <Button onClick={actions.viewSnapshots} block size="large" type="dashed" >View Snapshots</Button>
-                <Button block size="large" type="primary" >Finalize</Button>
+                <Button loading={finalizing} onClick={actions.finaliseBuild} block size="large" type="primary" >Finalize</Button>
                 <Button onClick={actions.cancelBuild} block size="large" danger type="text" >Cancel Build</Button>
             </Space>
         </React.Fragment>
