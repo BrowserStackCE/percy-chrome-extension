@@ -1,4 +1,4 @@
-import React from "react";
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons"
 import {
   Button,
   Card,
@@ -12,17 +12,19 @@ import {
   Popconfirm,
   Row,
   Space
-} from "antd";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import Logo from "data-base64:~assets/icon.svg";
-import { useFinalizing } from "~hooks/use-finalizing";
-import { usePercyBuild } from "~hooks/use-percy-state";
-import { Snapshot } from "~schemas/snapshot";
-import { UpdateBuild } from "~utils/build";
-import theme from "../theme";
-import SnapshotForm from "~components/snapshot.form";
+} from "antd"
+import Logo from "data-base64:~assets/icon.svg"
+import React from "react"
 
-import "./installation.scss";
+import SnapshotForm from "~components/snapshot.form"
+import { useFinalizing } from "~hooks/use-finalizing"
+import { usePercyBuild } from "~hooks/use-percy-state"
+import { Snapshot } from "~schemas/snapshot"
+import { UpdateBuild } from "~utils/build"
+
+import theme from "../theme"
+
+import "./installation.scss"
 
 export default function Installation() {
   return (
@@ -37,69 +39,95 @@ export default function Installation() {
         </Layout.Header>
         <Layout.Content className="background-container">
           <div className="content-container">
-            {/* Add your installation steps here */}
-            <h1>Steps to Set Up Percy Server</h1>
-            <ol style={{ paddingLeft: "20px", marginBottom: "20px" }}>
+            <h1>Getting Started with Percy Chrome Extension</h1>
+
+            <p>
+              Make sure the steps below are followed to compare your snapshots
+              on Percy:
+            </p>
+
+            <h2>Step 1: Signup/Login to your Percy Account</h2>
+            <ul>
               <li>
-                Go ahead and create a new project on the Percy Dashboard. You can follow{" "}
-                <a
-                  href="https://docs.percy.io/docs/your-first-percy-build#2-create-a-percy-project"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  this documentation
-                </a>{" "}
-                on how to get started.
+                Visit <a href="https://percy.io/">percy.io</a>, sign in or Login
+                here
+              </li>
+            </ul>
+
+            <h2>Step 2: Create a Percy Project</h2>
+            <ul>
+              <li>
+                Visit <a href="https://percy.io/">percy.io</a>
+              </li>
+              <li>Go to dashboard & click "Create new project".</li>
+              <li>Specify the "Project name".</li>
+              <li>Click "Create Project".</li>
+            </ul>
+
+            <h2>Step 3: Using Percy Token</h2>
+            <ul>
+              <li>
+                After the project is created, a token is generated which will
+                identify your project builds to Percy servers.
+              </li>
+            </ul>
+
+            <h2>Step 4: Download Percy Executable file</h2>
+            <ul>
+              <li>
+                Based on your device OS download Percy executable for
+                <a href="https://github.com/percy/cli/releases/download/v1.27.1/percy-osx.zip">
+                  &nbsp;MAC
+                </a>
+                <a href="https://github.com/percy/cli/releases/download/v1.27.1/percy-win.zip">
+                  &nbsp;, Windows
+                </a>
+                &nbsp;or
+                <a href="https://github.com/percy/cli/releases/download/v1.27.1/percy-linux.zip">
+                  &nbsp;Linux
+                </a>
+              </li>
+              <li>Unzip the file and open the extracted Percy Folder</li>
+              <li>
+                Start the command line at this specific location of Percy
+                executable
+              </li>
+            </ul>
+
+            <h2>Step 5: Start Percy Server</h2>
+            <ul>
+              <li>
+                Export the PERCY_TOKEN from the project settings in your command
+                line, e.g.,
               </li>
               <li>
-                Download the Percy executable file:
-                <ul style={{ paddingLeft: "20px", marginBottom: "10px" }}>
-                  <li>
-                    {" "}
-                    <a
-                      href="https://github.com/percy/cli/releases/download/v1.27.1/percy-osx.zip"
-                      download
-                    >
-                      Download for Mac
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="https://github.com/percy/cli/releases/download/v1.27.1/percy-win.zip"
-                      download
-                    >
-                      Download for Windows
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="https://github.com/percy/cli/releases/download/v1.27.1/percy-linux.zip"
-                      download
-                    >
-                      Download for Linux
-                    </a>
-                  </li>
-                </ul>
-              </li>
-              <li>Unzip the zip file and open the extracted Percy folder.</li>
-              <li>Now start a terminal at this specific location.</li>
-              <li>
-                Copy the <strong>PERCY_TOKEN</strong> from the Project Setting Tab of your Percy Project Dashboard.
+                <code>export PERCY_TOKEN=&lt;YOUR_PERCY_TOKEN&gt;</code>
               </li>
               <li>
-                Save the copied <strong>PERCY_TOKEN</strong> as an environment variable. You can use the respective command in the open terminal to do so:
-                <ul style={{ paddingLeft: "20px", marginBottom: "10px" }}>
-                  <li>For MAC and Linux: <strong>export PERCY_TOKEN="Your percy token"</strong></li>
-                  <li>For Windows: <strong>set PERCY_TOKEN="Your percy token"</strong></li>
-                </ul>
+                After adding your PERCY_TOKEN, start percy server using this
+                command: <code>npx percy exec:start</code>
               </li>
-              <li>Now run the following command: <strong>percy exec:start</strong></li>
-              <li>Now that the Percy Server has started, you can go ahead and finalize your build.</li>
-              {/* Add more steps as needed */}
-            </ol>
+            </ul>
+
+            <h2>Step 6: Using Chrome Extension</h2>
+            <ul>
+              <li>
+                You can use the chrome extension interface to capture a single
+                snapshot or auto-capture snapshots
+              </li>
+              <li>
+                Once all snapshots are captured, you can review them from the
+                view snapshots page or finalize the build
+              </li>
+              <li>
+                When the build is finalized, the extension automatically
+                navigates you to the Percy project dashboard where you can
+                review the changes.
+              </li>
+            </ul>
           </div>
         </Layout.Content>
       </Layout>
     </ConfigProvider>
-  );
+  )
 }
