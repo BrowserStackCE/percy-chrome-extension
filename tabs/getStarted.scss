@@ -1,0 +1,28 @@
+@import "../styles.scss";
+
+h2 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+p {
+  font-size: 16px;
+}
+
+a {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: bold;
+}
+
+code {
+  background-color: #ebe4e4;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: monospace;
+}
+
+.getStarted-content {
+  padding-left: 30px;
+  background-color: #ffffff;
+}

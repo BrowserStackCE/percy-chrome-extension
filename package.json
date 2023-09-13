@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@ant-design/icons": "^5.2.5",
+    "@esbuild/darwin-arm64": "^0.19.2",
     "@parcel/watcher": "^2.3.0",
     "@percy/dom": "^1.26.3",
     "@percy/logger": "^1.27.0",
@@ -18,11 +19,12 @@
     "@plasmohq/messaging": "^0.5.0",
     "@plasmohq/storage": "^1.7.2",
     "antd": "^5.8.4",
-    "lightningcss": "^1.21.7",
+    "lightningcss": "^1.21.8",
     "plasmo": "0.82.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-router-dom": "^6.15.0",
+    "typography": "^0.16.24",
     "zod": "^3.22.2"
   },
   "devDependencies": {
