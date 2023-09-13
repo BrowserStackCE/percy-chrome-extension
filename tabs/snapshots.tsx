@@ -34,6 +34,7 @@ export default function SnapshotsList() {
         },
         finalize:()=>{
             triggerFinalize()
+        },
         clearBuild: ()=>{
             ClearBuild()
         }

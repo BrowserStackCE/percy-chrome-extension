@@ -1,26 +1,10 @@
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons"
 import {
-  Button,
-  Card,
-  Col,
   ConfigProvider,
-  Descriptions,
-  Empty,
-  Form,
   Layout,
-  Modal,
-  Popconfirm,
-  Row,
-  Space
 } from "antd"
 import Logo from "data-base64:~assets/icon.svg"
 import React from "react"
 
-import SnapshotForm from "~components/snapshot.form"
-import { useFinalizing } from "~hooks/use-finalizing"
-import { usePercyBuild } from "~hooks/use-percy-state"
-import { Snapshot } from "~schemas/snapshot"
-import { UpdateBuild } from "~utils/build"
 
 import theme from "../theme"
 
