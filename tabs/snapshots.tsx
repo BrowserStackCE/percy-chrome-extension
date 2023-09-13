@@ -7,7 +7,7 @@ import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
 import theme from '../theme'
 import SnapshotForm from "~components/snapshot.form";
 import { Snapshot } from "~schemas/snapshot";
-import { UpdateBuild } from "~utils/build";
+import { ClearBuild, UpdateBuild } from "~utils/build";
 export default function SnapshotsList() {
     const { build } = usePercyBuild()
     const [modalOpen, SetModal] = useState({ open: false, index: undefined })
@@ -28,6 +28,9 @@ export default function SnapshotsList() {
         deleteSnapshot: (index: number) => {
             build.snapshots = build.snapshots.filter((s, i) => i !== index);
             UpdateBuild(build)
+        },
+        clearBuild: ()=>{
+            ClearBuild()
         }
     }
     return (
@@ -41,6 +44,9 @@ export default function SnapshotsList() {
                     </div>
                     <Space>
                         <Button type="primary" >Finalize</Button>
+                        <Popconfirm onConfirm={actions.clearBuild} title="Clear Snapshots?" description="Are you sure you want to clear all captured snapshots?">
+                            <Button >Clear</Button>
+                        </Popconfirm>
                     </Space>
                 </Layout.Header>
                 <Layout.Content>

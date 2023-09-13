@@ -25,6 +25,12 @@ export function UpdateBuild(build: PercyBuild) {
     }
 }
 
+export function ClearBuild(){
+    chrome.storage.local.set({
+        percyBuild: { snapshots: [] }
+    }).catch(console.error)
+}
+
 export function PercyBuildCallback(fn: (changes) => void) {
     const callback = (changes, areaName) => {
         if (areaName == 'local') {
@@ -49,6 +55,8 @@ export function PercyBuildCallback(fn: (changes) => void) {
 export async function FinaliseBuild(build: PercyBuild) {
     const errors = []
     const success = []
+    const plaformInfo = await chrome.runtime.getPlatformInfo()
+    const manifest = chrome.runtime.getManifest()
     for (const snapshot of build.snapshots) {
         const percySnapshot = {
             // required
@@ -56,8 +64,8 @@ export async function FinaliseBuild(build: PercyBuild) {
             url: snapshot.url,
             domSnapshot: snapshot.dom,
             // optional
-            environmentInfo: [],
-            clientInfo: "browser-extension/0.0.1",
+            environmentInfo: [`${plaformInfo.os}/${plaformInfo.arch}`],
+            clientInfo: `browser-extension/${manifest.version}`,
             widths: snapshot.options.widths?.map((w) => Number(w)).filter((w) => w != NaN),
             minHeight: Number(snapshot.options["min-height"] || 0),
             enableJavaScript: snapshot.options["enable-javascript"],

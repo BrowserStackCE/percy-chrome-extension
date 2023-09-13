@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const SnapshotOptionsSchema = z.object({
     name: z.string(),
-    "widths": z.array(z.number().or(z.string())).max(10),
+    "widths": z.array(z.number().or(z.string())).max(10).default([375,1280]),
     "min-height": z.string(),
     "percy-css": z.string().optional(),
     "scope": z.string().optional(),

@@ -8,22 +8,20 @@ const handler: PlasmoMessaging.MessageHandler<Snapshot> = async (req, res) => {
     console.debug(`Received Request ${JSON.stringify(req, undefined, 2)}`)
     try {
         const url = req.sender.url
-        const headers = (await chrome.storage.session.get(url))[url] || {}
-        console.log(headers)
-        const cookie = await new Promise<string>((resolve)=>{
-            chrome.cookies.getAll({url:url},(cookies)=>{
-                resolve(cookies.map((c)=>`${c.name}=${c.value}`).join(';'))
-            })
-        })
-        headers['cookie'] = cookie
-        console.info("Setting Cookie " + cookie)
+        // const headers = (await chrome.storage.session.get(url))[url] || {}
+        // console.log(headers)
+        // const cookie = await new Promise<string>((resolve)=>{
+        //     chrome.cookies.getAll({url:url},(cookies)=>{
+        //         resolve(cookies.map((c)=>`${c.name}=${c.value}`).join(';'))
+        //     })
+        // })
+        // headers['cookie'] = cookie
+        // console.info("Setting Cookie " + cookie)
         console.info("Validation req body")
         const snapshot = SnapshotSchema.parse({
             ...req.body,
-            url,
-            headers
+            url
         })
-        
         console.info(`Snapshot created ${JSON.stringify(snapshot, undefined, 2)}`)
         console.info("Req body validation successful")
         console.info("Capturing Preview")
@@ -43,11 +41,11 @@ const handler: PlasmoMessaging.MessageHandler<Snapshot> = async (req, res) => {
             await chrome.storage.local.set({ percyBuild }).then(()=>{
                 console.info("Build saved to local storage")
             })
-        }).finally(()=>{
-            res.send(null)
         })
+
+        res.send({success:true})
     } catch (err) {
-        console.error(err)
+        res.send({success:false, error:err})
     }
 }
 

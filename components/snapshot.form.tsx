@@ -26,18 +26,18 @@ SnapshotForm.Options = function () {
         <React.Fragment>
             <Form.Item rules={[{
                 required: true
-            }]} name="widths" initialValue={["375", "1280"]} label="Widths" >
+            }]} name="widths" label="Widths" >
                 <Select mode="tags" />
             </Form.Item>
             <Form.Item rules={[{
                 required: true
-            }]} name="min-height" initialValue={"1024"} label="Min Height" >
+            }]} name="min-height" label="Min Height" >
                 <Input inputMode="numeric" type="number" />
             </Form.Item>
             <Form.Item name="percy-css" label="Percy CSS" >
                 <Input.TextArea autoSize style={{ minHeight: 100 }} />
             </Form.Item>
-            <Form.Item valuePropName="checked" initialValue={false} rules={[{
+            <Form.Item valuePropName="checked" rules={[{
                 required: true
             }]} name="enable-javascript" label="Enable Javascript" >
                 <Switch />
