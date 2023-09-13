@@ -24,6 +24,9 @@ const handler: PlasmoMessaging.MessageHandler = async (req, res) => {
   } else {
     console.log("Percy not enabled")
     // Docs Page
+    chrome.tabs.create({
+        url:'./tabs/installation.html'
+    })
     res.send(null)
   }
 }
