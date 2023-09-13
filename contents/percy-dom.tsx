@@ -4,27 +4,38 @@ import { SnapshotOptions, SnapshotOptionsSchema } from "~schemas/snapshot"
 import { CaptureSnapshot } from "~utils/capture-snapshot"
 
 
-export const config: PlasmoCSConfig = {}
+export const config: PlasmoCSConfig = {
+    run_at: "document_start",
+    matches: ["http://*/*", "https://*/*"],
+}
 
 export default function SnapshotModal() {
-    useMessage<SnapshotOptions, void>(async (req, res) => {
+    useMessage<SnapshotOptions, any>(async (req, res) => {
         console.debug(`Received Request ${JSON.stringify(req, undefined, 2)}`)
         if (req.name === 'take_snapshot') {
             try {
                 const options = SnapshotOptionsSchema.parse(req.body)
                 await CaptureSnapshot(options)
+                res.send({ success: true })
             } catch (err) {
-                console.error(err)
+                res.send({ success: false, error: err })
             }
         } else if (req.name === 'take_snapshot_with_modal') {
             const snapshotName = prompt("Enter Snapshot Name");
-            await CaptureSnapshot({
-                name:snapshotName,
-                widths:[375,1280],
-                "min-height":"1024"
-              })
+            if (snapshotName) {
+                try {
+                    await CaptureSnapshot({
+                        name: snapshotName,
+                        widths: [375, 1280],
+                        "min-height": "1024"
+                    })
+                    res.send({ success: true })
+                } catch (err) {
+                    res.send({ success: false, error: err })
+                }
+            }
         }
-        res.send()
+
     })
     return null;
 }

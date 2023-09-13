@@ -6,7 +6,7 @@ export function StartAutoCapture() {
 
 export function StopAutoCapture() {
     return chrome.storage.local.set({
-        
+        autoCapture: false
     })
 }
 

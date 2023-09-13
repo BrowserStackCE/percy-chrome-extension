@@ -9,6 +9,7 @@ import SnapshotForm from "~components/snapshot.form";
 import { Snapshot } from "~schemas/snapshot";
 import { UpdateBuild } from "~utils/build";
 import { useFinalizing } from "~hooks/use-finalizing";
+import { ClearBuild, UpdateBuild } from "~utils/build";
 export default function SnapshotsList() {
     const { build } = usePercyBuild()
     const [modalOpen, SetModal] = useState({ open: false, index: undefined })
@@ -33,6 +34,8 @@ export default function SnapshotsList() {
         },
         finalize:()=>{
             triggerFinalize()
+        clearBuild: ()=>{
+            ClearBuild()
         }
     }
     return (
@@ -45,7 +48,14 @@ export default function SnapshotsList() {
                         </div>
                     </div>
                     <Space>
+
                         <Button loading={finalizing} onClick={actions.finalize} type="primary" >Finalize</Button>
+
+                       
+                        <Popconfirm onConfirm={actions.clearBuild} title="Clear Snapshots?" description="Are you sure you want to clear all captured snapshots?">
+                            <Button >Clear</Button>
+                        </Popconfirm>
+
                     </Space>
                 </Layout.Header>
                 <Layout.Content>
