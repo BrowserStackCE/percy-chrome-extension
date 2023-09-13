@@ -3,13 +3,14 @@ import { Button, Divider, Form, Input, message, Modal, Space } from "antd";
 import React, { useState } from "react";
 import SnapshotForm from "~components/snapshot.form";
 import { useAutoCapture } from "~hooks/use-autocapture";
+import { useFinalizing } from "~hooks/use-finalizing";
 import { DeleteBuild } from "~utils/build";
 
 export function CaptureView() {
     const [form] = Form.useForm()
     const { autoCapture, ToggleAutoCapture } = useAutoCapture()
     const [capturing,SetCapturing] = useState(false)
-    const [finalizing,SetFinalising] = useState(false)
+    const {finalizing,triggerFinalize} = useFinalizing()
     const actions = {
         capture: () => {
             SetCapturing(true)
@@ -40,12 +41,7 @@ export function CaptureView() {
             ToggleAutoCapture()
         },
         finaliseBuild:()=>{
-            SetFinalising(true)
-            sendToBackground({name:'finalize-build'}).finally(()=>{
-                SetFinalising(false)
-            }).then(()=>{
-                
-            })
+            triggerFinalize()
         }
     }
 
