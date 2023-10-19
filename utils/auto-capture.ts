@@ -1,32 +1,15 @@
-export function StartAutoCapture() {
-    return chrome.storage.local.set({
-        autoCapture: true
-    })
-}
+import { LocalStorage } from "./storage"
 
-export function StopAutoCapture() {
-    return chrome.storage.local.set({
-        autoCapture: false
-    })
-}
-
-export function AutoCaptureCallback(fn: (changes) => void) {
-    const callback = (changes, areaName) => {
-        if (areaName == 'local') {
-            if (changes.autoCapture) {
-                fn(changes)
-            }
-        }
+export class AutoCapture{
+    static start(){
+        return LocalStorage.set('autoCapture',true)
     }
-    chrome.storage.local.get('autoCapture').then(({ autoCapture }) => {
-        fn({
-            autoCapture: {
-                newValue: autoCapture
-            }
-        })
-    })
-    chrome.storage.onChanged.addListener(callback);
-    return () => {
-        chrome.storage.onChanged.removeListener(callback)
+
+    static stop(){
+        return LocalStorage.set('autoCapture',false)
+    }
+    
+    static listen(callback:(value:boolean)=>void){
+        return LocalStorage.listen<boolean>('autoCapture',callback)
     }
 }

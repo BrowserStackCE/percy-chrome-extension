@@ -6,10 +6,10 @@ import { Route, Routes } from 'react-router-dom'
 import { StaticRouter as Router } from "react-router-dom/server";
 import { StartView } from "~views/start.view"
 import { CaptureView } from "~views/capture.view"
-import { usePercyBuild } from "~hooks/use-percy-state"
+import { useLocalStorage } from "~hooks/use-storage"
 
 function IndexPopup() {
-  const { build } = usePercyBuild()
+  const [build] = useLocalStorage('build')
   return (
     <ConfigProvider theme={theme}>
       <Router location={build ? '/capture' : '/'} >

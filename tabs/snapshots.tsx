@@ -1,42 +1,51 @@
-import { Button, Card, Col, ConfigProvider, Descriptions, Empty, Form, Layout, Modal, Popconfirm, Row, Space } from "antd";
+import { Button, Card, Col, ConfigProvider, Descriptions, Empty, Form, Layout, message, Modal, Popconfirm, Row, Space, Table } from "antd";
 import React, { useState } from "react";
 import './snapshots.scss';
 import Logo from "data-base64:~assets/icon.svg";
-import { usePercyBuild } from "~hooks/use-percy-state";
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
+import { DeleteOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons'
 import theme from '../theme'
 import SnapshotForm from "~components/snapshot.form";
 import { Snapshot } from "~schemas/snapshot";
-import { UpdateBuild } from "~utils/build";
-import { useFinalizing } from "~hooks/use-finalizing";
-import { ClearBuild, UpdateBuild } from "~utils/build";
+import { useLocalStorage, useSessionStorage } from "~hooks/use-storage";
+import { Percy } from "~utils/percy-utils";
+import { sendToBackground } from "@plasmohq/messaging";
+import { PercyBuild } from "~schemas/build";
 export default function SnapshotsList() {
-    const { build } = usePercyBuild()
-    const [modalOpen, SetModal] = useState({ open: false, index: undefined })
-    const {finalizing,triggerFinalize}=useFinalizing()
+    const [build] = useLocalStorage<PercyBuild>('build')
+    const [modalOpen, SetModal] = useState({ open: false, name: undefined })
+    const [finalizing] = useLocalStorage('finalizing', false)
     const [form] = Form.useForm()
     const actions = {
-        editSnapshot: (snapshot: Snapshot, index: number) => {
-            form.setFieldsValue(snapshot.options);
-            SetModal({ open: true, index: index })
+        editSnapshot: (snapshot: Snapshot, name: string) => {
+            form.setFieldValue('options',snapshot.options);
+            SetModal({ open: true, name })
         },
         updateSnapshot: () => {
-            form.validateFields().then((options) => {
-                build.snapshots[modalOpen.index].options = options
-                UpdateBuild(build)
+            form.validateFields().then(({options}) => {
+                build.snapshots[modalOpen.name].options = options
+                Percy.setBuild(build)
                 form.resetFields()
-                SetModal({ open: false, index: undefined })
+                SetModal({ open: false, name: undefined })
             })
         },
-        deleteSnapshot: (index: number) => {
-            build.snapshots = build.snapshots.filter((s, i) => i !== index);
-            UpdateBuild(build)
+        deleteSnapshot: (name: string) => {
+            delete build.snapshots[name]
+            Percy.setBuild(build)
         },
-        finalize:()=>{
-            triggerFinalize()
+        finalize: () => {
+            sendToBackground({ name: 'finalize-build' }).then((res)=>{
+                if(!res){
+                    message.error("Failed to start percy. Please make sure the desktop app is running and Percy token was entered correctly.")
+                }
+            })
         },
-        clearBuild: ()=>{
-            ClearBuild()
+        clearBuild: () => {
+            Percy.clearBuild()
+        },
+        openPreview: (snapshot: Snapshot) => {
+            console.log(snapshot.dom)
+            var newWindow = window.open("");
+            newWindow.document.write(snapshot.dom.html)
         }
     }
     return (
@@ -49,33 +58,68 @@ export default function SnapshotsList() {
                         </div>
                     </div>
                     <Space>
-
                         <Button loading={finalizing} onClick={actions.finalize} type="primary" >Finalize</Button>
-
-                       
                         <Popconfirm onConfirm={actions.clearBuild} title="Clear Snapshots?" description="Are you sure you want to clear all captured snapshots?">
                             <Button >Clear</Button>
                         </Popconfirm>
-
                     </Space>
                 </Layout.Header>
                 <Layout.Content>
-                    <Row style={{ padding: 20 }} gutter={[20, 20]}>
-                        {build?.snapshots?.map((snapshot, i) => {
+                    <Table columns={[
+                        {
+                            key: "name",
+                            title: "Snapshot Name",
+                            dataIndex: ["options", "name"]
+                        },
+                        {
+                            key: "widths",
+                            title: "Widths",
+                            dataIndex: ["options", "widths"],
+                            render: (widths) => widths.join(',')
+                        },
+                        {
+                            key: "min-height",
+                            title: "Min Height",
+                            dataIndex: ["options", "min-height"]
+                        },
+                        {
+                            key: "enable-javascript",
+                            title: "Enable Javascript",
+                            dataIndex: ["options", "enable-javascript"],
+                            render: (val, record) => val || "false"
+                        },
+                        {
+                            key: "actions",
+                            render: (_,record) => {
+                                return (
+                                    <Space>
+                                        <Button onClick={() => actions.editSnapshot(record, record.options.name)} icon={<EditOutlined/>} />
+                                        {/* <Button onClick={() => actions.openPreview(record)} icon={<EyeOutlined/>} /> */}
+                                        <Popconfirm key="delete" onConfirm={() => actions.deleteSnapshot(record.options.name)} title="Delete Snapshot?" description="Are you sure you want to delete this snapshot? This cannot be undone.">
+                                            <Button danger icon={<DeleteOutlined />} />
+                                        </Popconfirm>
+                                    </Space>
+                                )
+                            }
+                        }
+                    ]} dataSource={Object.values(build?.snapshots || {})} />
+                    {/* <Row style={{ padding: 20 }} gutter={[20, 20]}>
+                        {Object.values(build?.snapshots || {}).map((snapshot) => {
                             return (
-                                <Col key={i} span={24} lg={6}>
+                                <Col key={snapshot.options.name} span={24} lg={6}>
                                     <Card extra={[
-                                        <Popconfirm onConfirm={() => actions.deleteSnapshot(i)} title="Delete Snapshot?" description="Are you sure you want to delete this snapshot? This cannot be undone.">
-                                            <Button danger key="delete" icon={<DeleteOutlined />} />
+                                        <Popconfirm key="delete" onConfirm={() => actions.deleteSnapshot(snapshot.options.name)} title="Delete Snapshot?" description="Are you sure you want to delete this snapshot? This cannot be undone.">
+                                            <Button danger icon={<DeleteOutlined />} />
                                         </Popconfirm>
                                     ]} title={snapshot.options?.name} className="card" actions={[
-                                        <Button type="primary" onClick={() => actions.editSnapshot(snapshot, i)} block key="edit" icon={<EditOutlined />} >Edit</Button>
+                                        <Button type="primary" onClick={() => actions.editSnapshot(snapshot, snapshot.options.name)} block key="edit" icon={<EditOutlined />} >Edit</Button>,
+                                        <Button onClick={() => actions.openPreview(snapshot)} >Preview</Button>
                                     ]} >
                                         <img className="item-image" src={snapshot.screenshot} alt={snapshot.options.name} />
                                         <Descriptions column={1} >
-                                            {Object.entries(snapshot.options).map(([key, value]) => {
+                                            {Object.entries(snapshot.options).map(([key, value], i) => {
                                                 return (
-                                                    <Descriptions.Item key={key} label={key} >{value?.toString()}</Descriptions.Item>
+                                                    <Descriptions.Item key={key + i} label={key} >{value?.toString()}</Descriptions.Item>
                                                 )
                                             })}
                                         </Descriptions>
@@ -83,11 +127,11 @@ export default function SnapshotsList() {
                                 </Col>
                             )
                         })}
-                    </Row>
-                    {build?.snapshots?.length > 0 ? null : <div className="empty-container">
+                    </Row> */}
+                    {/* {Object.values(build?.snapshots || {}).length > 0 ? null : <div className="empty-container">
                         <Empty description="No snapshots captured yet." />
-                    </div>}
-                    <Modal onOk={actions.updateSnapshot} okText="Save" onCancel={() => SetModal({ open: false, index: undefined })} title="Take Snapshot" open={modalOpen.open} >
+                    </div>} */}
+                    <Modal onOk={actions.updateSnapshot} okText="Save" onCancel={() => SetModal({ open: false, name: undefined })} title="Take Snapshot" open={modalOpen.open} >
                         <Form form={form} layout="vertical">
                             <SnapshotForm />
                         </Form>

@@ -1,13 +1,24 @@
-import { Button } from "antd";
+import { Button, Form, Input } from "antd";
 import React from "react";
-import { Link } from "react-router-dom";
-import { CreateBuild } from "~utils/build";
+import { Percy } from "~utils/percy-utils";
 
 
 export function StartView() {
+    const [form] = Form.useForm()
+    const actions = {
+        cretaeBuild:()=>{
+            const token = form.getFieldValue('token')
+            Percy.createBuild(token)
+        }
+    }
     return (
         <React.Fragment>
-            <Button onClick={()=>CreateBuild()} block type="primary">Start</Button>
+            <Form form={form}>
+                <Form.Item label="Percy Token" name={['token']} >
+                    <Input size="large" />
+                </Form.Item>
+            </Form>
+            <Button onClick={actions.cretaeBuild} block type="primary">Start</Button>
         </React.Fragment>
     )
 }

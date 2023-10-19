@@ -4,9 +4,7 @@ import React from "react";
 export default function SnapshotForm() {
     return (
         <React.Fragment>
-            <Form.Item rules={[{
-                required: true
-            }]} name="name" className="mb-0" label="Snapshot Name">
+            <Form.Item name="name" className="mb-0" label="Snapshot Name">
                 <Input size="large" />
             </Form.Item>
             <Collapse expandIconPosition='end' ghost items={[{
@@ -26,24 +24,24 @@ SnapshotForm.Options = function () {
         <React.Fragment>
             <Form.Item rules={[{
                 required: true
-            }]} name="widths" label="Widths" >
+            }]} name={["options","widths"]} label="Widths" >
                 <Select mode="tags" />
             </Form.Item>
             <Form.Item rules={[{
                 required: true
-            }]} name="min-height" label="Min Height" >
+            }]} name={["options","min-height"]} label="Min Height" >
                 <Input inputMode="numeric" type="number" />
             </Form.Item>
-            <Form.Item name="percy-css" label="Percy CSS" >
+            <Form.Item name={["options","percy-css"]} label="Percy CSS" >
                 <Input.TextArea autoSize style={{ minHeight: 100 }} />
             </Form.Item>
             <Form.Item valuePropName="checked" rules={[{
                 required: true
-            }]} name="enable-javascript" label="Enable Javascript" >
+            }]} name={["options","enable-javascript"]} label="Enable Javascript" >
                 <Switch />
             </Form.Item>
-            <Form.Item name="scope" label="Scope" >
-                <Input />
+            <Form.Item name={["options","scope"]} label="Scope" >
+                <Input  />
             </Form.Item>
         </React.Fragment>
     )

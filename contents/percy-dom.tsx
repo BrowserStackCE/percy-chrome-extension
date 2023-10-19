@@ -2,6 +2,8 @@ import type { PlasmoCSConfig } from "plasmo"
 import { useMessage } from "@plasmohq/messaging/hook"
 import { SnapshotOptions, SnapshotOptionsSchema } from "~schemas/snapshot"
 import { CaptureSnapshot } from "~utils/capture-snapshot"
+import { useLocalStorage } from "~hooks/use-storage"
+import { PercyBuild } from "~schemas/build"
 
 
 export const config: PlasmoCSConfig = {
@@ -10,32 +12,18 @@ export const config: PlasmoCSConfig = {
 }
 
 export default function SnapshotModal() {
-    useMessage<SnapshotOptions, any>(async (req, res) => {
-        console.debug(`Received Request ${JSON.stringify(req, undefined, 2)}`)
+    const [build] = useLocalStorage<PercyBuild>('build')
+    useMessage<{name?:string,options:SnapshotOptions}, any>(async (req, res) => {
         if (req.name === 'take_snapshot') {
             try {
-                const options = SnapshotOptionsSchema.parse(req.body)
-                await CaptureSnapshot(options)
+                const options = SnapshotOptionsSchema.parse(req.body?.options || {})
+                await CaptureSnapshot(options,req.body?.name)
                 res.send({ success: true })
             } catch (err) {
+                console.log(err)
                 res.send({ success: false, error: err })
             }
-        } else if (req.name === 'take_snapshot_with_modal') {
-            const snapshotName = prompt("Enter Snapshot Name");
-            if (snapshotName) {
-                try {
-                    await CaptureSnapshot({
-                        name: snapshotName,
-                        widths: [375, 1280],
-                        "min-height": "1024"
-                    })
-                    res.send({ success: true })
-                } catch (err) {
-                    res.send({ success: false, error: err })
-                }
-            }
         }
-
     })
     return null;
 }

@@ -1,8 +1,9 @@
 import { sendToContentScript } from "@plasmohq/messaging";
 import { PreferncesSchema } from "~schemas/preferences";
-import { AutoCaptureCallback, StartAutoCapture, StopAutoCapture } from "~utils/auto-capture";
-import { PercyBuildCallback } from "~utils/build";
-import { GetPreferences, SetPreferences } from "~utils/preferences";
+import { AutoCapture } from "~utils/auto-capture";
+import { Commands } from "~utils/commands";
+import { Percy } from "~utils/percy-utils";
+import { LocalStorage } from "~utils/storage";
 
 let autoCaptureRunning = false
 let percyEnabled = false
@@ -10,21 +11,24 @@ let percyEnabled = false
 const contextMenus = {
     'Capture Single Snapshot': {
         handler: () => {
-            sendToContentScript({ name: 'take_snapshot_with_modal' })
+            sendToContentScript({ name: 'take_snapshot' })
         },
-        visible: () => percyEnabled
+        visible: () => percyEnabled,
+        shortcut: "Alt + Q"
     },
     'Start Auto-Capture': {
         handler: () => {
-            StartAutoCapture()
+            AutoCapture.start()
         },
-        visible: () => percyEnabled && !autoCaptureRunning
+        visible: () => percyEnabled && !autoCaptureRunning,
+        shortcut: "Alt + W"
     },
     'Stop Auto-Capture': {
         handler: () => {
-            StopAutoCapture()
+            AutoCapture.stop()
         },
-        visible: () => percyEnabled && autoCaptureRunning
+        visible: () => percyEnabled && autoCaptureRunning,
+        shortcut: "Alt + W"
     },
     'View snapshots': {
         handler: () => {
@@ -32,7 +36,8 @@ const contextMenus = {
                 url: "./tabs/snapshots.html"
             })
         },
-        visible: () => percyEnabled
+        visible: () => percyEnabled,
+        shortcut: "Alt + E"
     },
     'Options': {
         handler: () => {
@@ -40,7 +45,8 @@ const contextMenus = {
                 url: "./options.html"
             })
         },
-        visible: () => true
+        visible: () => true,
+        shortcut: "Alt + R"
     }
 }
 
@@ -57,21 +63,19 @@ function CreateContextMenus() {
 
 function UpdateContextMenusVisibility(ids?: (keyof typeof contextMenus)[]) {
     (ids || Object.keys(contextMenus)).map((key) => {
-        console.log(contextMenus[key].visible)
         chrome.contextMenus.update(key, {
             visible: contextMenus[key].visible()
         })
     })
 }
 
-AutoCaptureCallback((changes) => {
-    autoCaptureRunning = changes.autoCapture.newValue
+AutoCapture.listen((val)=>{
+    autoCaptureRunning = val
     UpdateContextMenusVisibility(["Start Auto-Capture", "Stop Auto-Capture"])
 })
 
-PercyBuildCallback((changes) => {
-    percyEnabled = changes.percyBuild.newValue != false && changes.percyBuild.newValue != undefined
-    console.log("PERCY ENABLED:" + percyEnabled)
+Percy.listen((build)=>{
+    percyEnabled = build != false && build != undefined
     UpdateContextMenusVisibility()
 })
 
@@ -97,14 +101,33 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
 
 chrome.runtime.onInstalled.addListener(() => {
 
-    //# Initialize Preferences
-    GetPreferences().then(({ preferences }) => {
-        if (!preferences) {
+    (async ()=>{
+        let preferences = await LocalStorage.get('preferences')
+        if(!preferences){
             preferences = PreferncesSchema.parse({})
-            SetPreferences(preferences)
+            await LocalStorage.set('preferences',preferences)
         }
-    })
+    })()
 
-    console.log("Installed")
+})
 
+chrome.commands.onCommand.addListener((command)=>{
+    switch(command){
+        case Commands.autoCapture:
+            if(autoCaptureRunning){
+                contextMenus["Stop Auto-Capture"].handler()
+            }else{
+                contextMenus["Start Auto-Capture"].handler()
+            }
+            break;
+        case Commands.takeSnapshot:
+            contextMenus["Capture Single Snapshot"].handler()
+            break;
+        case Commands.viewOptions:
+            contextMenus["Options"].handler()
+            break;
+        case Commands.viewSnapshots:
+            contextMenus["View snapshots"].handler()
+            break;
+    }
 })

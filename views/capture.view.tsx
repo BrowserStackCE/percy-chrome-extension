@@ -1,40 +1,46 @@
 import { sendToBackground, sendToContentScript } from "@plasmohq/messaging";
-import { Button, Divider, Form, Input, message, Modal, Popconfirm, Space } from "antd";
+import { Button, Divider, Form, message, notification, Popconfirm, Space } from "antd";
 import React, { useEffect, useState } from "react";
 import SnapshotForm from "~components/snapshot.form";
-import { useAutoCapture } from "~hooks/use-autocapture";
-import { useFinalizing } from "~hooks/use-finalizing";
-import { usePreferences } from "~hooks/use-preferences";
-import { DeleteBuild } from "~utils/build";
+import { useLocalStorage, useSessionStorage } from "~hooks/use-storage";
+import { PreferncesSchema } from "~schemas/preferences";
+import { SnapshotOptionsSchema, SnapshotSchema } from "~schemas/snapshot";
+import { Percy } from "~utils/percy-utils";
 
 export function CaptureView() {
     const [form] = Form.useForm()
-    const { autoCapture, ToggleAutoCapture } = useAutoCapture()
-
-    const [capturing,SetCapturing] = useState(false)
-    const {finalizing,triggerFinalize} = useFinalizing()
-    const { preferences } = usePreferences()
+    const [autoCapture, SetAutoCapture] = useLocalStorage('autoCapture', false)
+    const [capturing, SetCapturing] = useState(false)
+    const [finalizing] = useLocalStorage('finalizing', false)
+    const [preferences] = useLocalStorage('preferences', PreferncesSchema.parse({}))
 
     const actions = {
         capture: () => {
             SetCapturing(true)
-            form.validateFields().then(async (options) => {
-                console.debug(`Snapshot Options: ${JSON.stringify(options, undefined, 2)}`)
+            form.validateFields().then(async (res) => {
+                const options = SnapshotOptionsSchema.parse(res.options)
                 await sendToContentScript({
                     name: 'take_snapshot',
-                    body: options
+                    body: {
+                        name: res.name,
+                        options
+                    }
                 }).then(() => {
                     form.resetFields(['name']);
                 }).catch((err) => {
                     console.error(err)
                     message.error(err)
                 })
-            }).catch(console.error).finally(() => {
+            }).catch((err) => {
+                console.error(err)
+                message.error(err)
+            }).finally(() => {
                 SetCapturing(false)
+
             })
         },
         cancelBuild: () => {
-            DeleteBuild()
+            Percy.deleteBuild()
         },
         viewSnapshots: () => {
             chrome.tabs.create({
@@ -42,20 +48,24 @@ export function CaptureView() {
             })
         },
         toggleCapture: () => {
-            ToggleAutoCapture()
+            SetAutoCapture(!autoCapture)
         },
-        finaliseBuild:()=>{
-            triggerFinalize()
+        finaliseBuild: () => {
+            sendToBackground({ name: 'finalize-build' }).then((res) => {
+                if (!res) {
+                    message.error("Failed to start percy. Please make sure the desktop app is running and Percy token was entered correctly.")
+                }
+            })
         }
     }
     useEffect(() => {
         if (preferences) {
-            form.setFieldsValue(preferences.defaultOptions)
+            form.setFieldsValue({ options: preferences.defaultSnapshotOptions })
         }
     }, [preferences])
     return (
         <React.Fragment>
-            <Form initialValues={{ options: preferences?.defaultOptions }} form={form} layout="vertical">
+            <Form form={form} initialValues={{ options: preferences?.defaultSnapshotOptions }} layout="vertical">
                 <SnapshotForm />
             </Form>
             <Space className="w-100" direction="vertical">

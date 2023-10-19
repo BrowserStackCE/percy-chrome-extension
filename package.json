@@ -48,7 +48,34 @@
       "activeTab",
       "nativeMessaging",
       "webRequest",
-      "cookies"
-    ]
+      "cookies",
+      "unlimitedStorage"
+    ],
+    "commands":{
+      "takeSnapshot":{
+        "suggested_key":{
+          "default":"Alt+Q"
+        },
+        "description":"Capture Snapshot"
+      },
+      "autoCapture":{
+        "suggested_key":{
+          "default":"Alt+W"
+        },
+        "description":"Start/Stop AutoCapture"
+      },
+      "viewSnapshots":{
+        "suggested_key":{
+          "default":"Alt+E"
+        },
+        "description":"View all snapshots"
+      },
+      "viewOptions":{
+        "suggested_key":{
+          "default":"Alt+R"
+        },
+        "description":"Open Options"
+      }
+    }
   }
 }
