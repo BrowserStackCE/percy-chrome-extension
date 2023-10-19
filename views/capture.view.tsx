@@ -1,8 +1,10 @@
+import { CheckCircleOutlined, EditOutlined } from "@ant-design/icons";
 import { sendToBackground, sendToContentScript } from "@plasmohq/messaging";
-import { Button, Divider, Form, message, notification, Popconfirm, Space } from "antd";
+import { Button, Divider, Form, Input, message, notification, Popconfirm, Space, Tag, Tooltip, Typography } from "antd";
 import React, { useEffect, useState } from "react";
 import SnapshotForm from "~components/snapshot.form";
 import { useLocalStorage, useSessionStorage } from "~hooks/use-storage";
+import { PercyBuild } from "~schemas/build";
 import { PreferncesSchema } from "~schemas/preferences";
 import { SnapshotOptionsSchema, SnapshotSchema } from "~schemas/snapshot";
 import { Percy } from "~utils/percy-utils";
@@ -13,7 +15,8 @@ export function CaptureView() {
     const [capturing, SetCapturing] = useState(false)
     const [finalizing] = useLocalStorage('finalizing', false)
     const [preferences] = useLocalStorage('preferences', PreferncesSchema.parse({}))
-
+    const [build] = useLocalStorage<PercyBuild>('build')
+    const [editPercyToken, SetEditPercyToken] = useState(false)
     const actions = {
         capture: () => {
             SetCapturing(true)
@@ -40,7 +43,7 @@ export function CaptureView() {
             })
         },
         cancelBuild: () => {
-            Percy.deleteBuild()
+            Percy.clearBuild()
         },
         viewSnapshots: () => {
             chrome.tabs.create({
@@ -63,13 +66,29 @@ export function CaptureView() {
             form.setFieldsValue({ options: preferences.defaultSnapshotOptions })
         }
     }, [preferences])
+
+    useEffect(() => {
+        if (editPercyToken == false && build) {
+            const token = form.getFieldValue('token')
+            Percy.setToken(token)
+        }
+    }, [editPercyToken])
+
+    useEffect(() => {
+        form.setFieldValue('token', build?.token)
+    }, [build])
     return (
         <React.Fragment>
-            <Form form={form} initialValues={{ options: preferences?.defaultSnapshotOptions }} layout="vertical">
+            <Form form={form} initialValues={{ options: preferences?.defaultSnapshotOptions, token: build?.token }} layout="vertical">
+                <Form.Item label="Percy Token" name={['token']} >
+                    <Input addonAfter={<Button type='text' onClick={() => SetEditPercyToken(!editPercyToken)} icon={editPercyToken ? <CheckCircleOutlined /> : <EditOutlined />} />} disabled={!editPercyToken} size="large" />
+                </Form.Item>
                 <SnapshotForm />
             </Form>
             <Space className="w-100" direction="vertical">
+                <Tooltip title="Alt + Q">
                 <Button loading={capturing} onClick={actions.capture} block size="large" >Capture Snapshot</Button>
+                </Tooltip>
                 <Button danger={autoCapture} onClick={actions.toggleCapture} block size="large" type="primary" >{autoCapture ? "Stop Auto Capture" : "Start Auto Capture"}</Button>
             </Space>
             <Divider />
@@ -79,6 +98,22 @@ export function CaptureView() {
                 <Popconfirm onConfirm={actions.cancelBuild} title="Cancel Build?" description="Are you sure you want to Cancel this build? This cannot be undone.">
                     <Button block size="large" danger type="text" >Cancel Build</Button>
                 </Popconfirm>
+            </Space>
+            <Divider/>
+            <Space direction="vertical" >
+                <Typography.Title level={4} >Keyboard Shortcuts</Typography.Title>
+                <div>
+                    <Tag>Alt | ⌥</Tag> + Q : Capture Snapshot
+                </div>
+                <div>
+                    <Tag>Alt | ⌥</Tag> + W : Toggle Autocapture
+                </div>
+                <div>
+                    <Tag>Alt | ⌥</Tag> + E : View Snapshots
+                </div>
+                <div>
+                    <Tag>Alt | ⌥</Tag> + R : Open Options
+                </div>
             </Space>
         </React.Fragment>
     )

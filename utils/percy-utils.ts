@@ -8,6 +8,13 @@ import { LocalStorage, SessionStorage } from "./storage";
 const baseurl = 'http://localhost:5338'
 const appUrl = 'http://localhost:3778'
 export class Percy {
+
+    static async setToken(token:string){
+        const build = await Percy.getBuild()
+        build.token = token
+        Percy.setBuild(build);
+    }
+
     static createBuild(token: string) {
         return LocalStorage.set('build', {
             token: token,
@@ -18,11 +25,6 @@ export class Percy {
     static async clearBuild() {
         const build = await Percy.getBuild()
         return Percy.createBuild(build.token)
-    }
-
-    static async deleteBuild() {
-        await LocalStorage.set('build', false)
-        await AutoCapture.stop()
     }
 
     static setBuild(build: PercyBuild) {
@@ -143,7 +145,7 @@ export class Percy {
             const buildInfo = await Percy.isEnabled()
             await Percy.stopPercy()
             if (errors.length == 0) {
-                await Percy.deleteBuild()
+                await Percy.clearBuild()
             }
             console.log(running)
             chrome.tabs.create({

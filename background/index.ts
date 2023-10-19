@@ -107,7 +107,16 @@ chrome.runtime.onInstalled.addListener(() => {
             preferences = PreferncesSchema.parse({})
             await LocalStorage.set('preferences',preferences)
         }
+        let build = await LocalStorage.get('build')
+        if(!build){
+            build = await Percy.createBuild("")
+            await LocalStorage.set('build',build)
+        }
     })()
+
+    chrome.tabs.create({
+        url:'https://github.com/browserstackce/percy-web-extension'
+    })
 
 })
 

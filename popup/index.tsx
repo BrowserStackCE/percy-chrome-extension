@@ -9,10 +9,9 @@ import { CaptureView } from "~views/capture.view"
 import { useLocalStorage } from "~hooks/use-storage"
 
 function IndexPopup() {
-  const [build] = useLocalStorage('build')
   return (
     <ConfigProvider theme={theme}>
-      <Router location={build ? '/capture' : '/'} >
+      <Router location={'/capture'} >
         <Layout className="popup-layout">
           <Layout.Header className="header">
             <div className="content">
@@ -23,7 +22,6 @@ function IndexPopup() {
           </Layout.Header>
           <Layout.Content className="popup-content">
             <Routes>
-              <Route path="/" element={<StartView />} />
               <Route path="/capture" element={<CaptureView />} />
             </Routes>
           </Layout.Content>
