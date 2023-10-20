@@ -42,8 +42,6 @@ To begin using the Percy Chrome Extension, follow these straightforward steps:
 
 ## Support and Feedback
 
-We are committed to providing exceptional support and ensuring a seamless visual testing experience. If you encounter issues or have questions, please reach out to our support team at [support@browserstack.com](support@browserstack.com).
-
 We value your feedback and welcome contributions to enhance the Percy Chrome Extension. If you have ideas for improvements or wish to contribute to the project, please visit our GitHub repository at [https://github.com/BrowserStackCE/percy-chrome-extension](https://github.com/BrowserStackCE/percy-chrome-extension).
 
 Thank you for choosing the Percy Chrome Extension for your visual testing needs. We are dedicated to making web application testing more efficient and visually accurate.
