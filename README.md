@@ -20,6 +20,11 @@ Manual Quality Assurance (QA) testers play a pivotal role in maintaining applica
 
 While many companies are transitioning to automation, some users prefer or require manual workflows for various reasons. The Percy Chrome Extension caters to these users, offering a user-friendly visual regression testing tool that seamlessly fits into manual QA processes. It simplifies the task of maintaining web application visual integrity, making it accessible to all.
 
+## Extension Components
+
+<p align="center">
+  <img src="assets/extension-ui.png" />
+</p>
 
 ## Getting Started
 
