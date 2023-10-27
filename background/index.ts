@@ -115,7 +115,7 @@ chrome.runtime.onInstalled.addListener(() => {
     })()
 
     chrome.tabs.create({
-        url:'https://github.com/browserstackce/percy-web-extension'
+        url:'https://github.com/BrowserStackCE/percy-chrome-extension'
     })
 
 })

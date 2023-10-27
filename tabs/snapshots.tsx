@@ -17,15 +17,24 @@ export default function SnapshotsList() {
     const [form] = Form.useForm()
     const actions = {
         editSnapshot: (snapshot: Snapshot, name: string) => {
-            form.setFieldValue('options',snapshot.options);
+            form.setFieldsValue({ options: snapshot.options,name:snapshot.options.name });
             SetModal({ open: true, name })
         },
         updateSnapshot: () => {
-            form.validateFields().then(({options}) => {
-                build.snapshots[modalOpen.name].options = options
-                Percy.setBuild(build)
-                form.resetFields()
-                SetModal({ open: false, name: undefined })
+            form.validateFields().then(({ options,name }) => {
+                console.log(options)
+                const snapshot = build.snapshots[modalOpen.name]
+                if (snapshot) {
+                    snapshot.options = options
+                    snapshot.options.name = name
+                    build.snapshots[options.name] = snapshot
+                    build.snapshots[modalOpen.name].options = options
+                    delete build.snapshots[modalOpen.name]
+                    Percy.setBuild(build)
+                    form.resetFields()
+                    SetModal({ open: false, name: undefined })
+                }
+                
             })
         },
         deleteSnapshot: (name: string) => {
@@ -33,8 +42,8 @@ export default function SnapshotsList() {
             Percy.setBuild(build)
         },
         finalize: () => {
-            sendToBackground({ name: 'finalize-build' }).then((res)=>{
-                if(!res){
+            sendToBackground({ name: 'finalize-build' }).then((res) => {
+                if (!res) {
                     message.error("Failed to start percy. Please make sure the desktop app is running and Percy token was entered correctly.")
                 }
             })
@@ -90,10 +99,10 @@ export default function SnapshotsList() {
                         },
                         {
                             key: "actions",
-                            render: (_,record) => {
+                            render: (_, record) => {
                                 return (
                                     <Space>
-                                        <Button onClick={() => actions.editSnapshot(record, record.options.name)} icon={<EditOutlined/>} />
+                                        <Button onClick={() => actions.editSnapshot(record, record.options.name)} icon={<EditOutlined />} />
                                         {/* <Button onClick={() => actions.openPreview(record)} icon={<EyeOutlined/>} /> */}
                                         <Popconfirm key="delete" onConfirm={() => actions.deleteSnapshot(record.options.name)} title="Delete Snapshot?" description="Are you sure you want to delete this snapshot? This cannot be undone.">
                                             <Button danger icon={<DeleteOutlined />} />
