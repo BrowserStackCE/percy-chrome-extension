@@ -15,6 +15,11 @@ For those who lack advanced automation setups but still wish to perform visual t
 
 Manual Quality Assurance (QA) testers play a pivotal role in maintaining application quality. With the Percy Chrome Extension, Manual QA testers can efficiently perform visual regression testing. Instead of configuring separate testing environments with complex .yml or .json files, they can use the extension to add URLs and seamlessly integrate visual testing into their manual workflows.
 
+## Demo Video
+
+<video width="520" height="400" controls>
+  <source src="assets/video2764154973.mp4" type="video/mp4">
+</video>
 
 ## Streamlining Manual QA Workflows
 
@@ -66,7 +71,7 @@ Percy provides multiple ways to perform the functions mentioned above:
   <img src="assets/context-menu.png" width="500" height="600"/>
 </p>
 
-- **From Keyboard Shortcuts**: You can trigger the above functioanlities directly from key-board shortcuts. Please find the list below.
+- **From Keyboard Shortcuts**: You can trigger the above functionalities directly from key-board shortcuts. Please find the list below.
 
 <p align="center">
   <img src="assets/keyboard-shortcut.png" />
