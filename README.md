@@ -26,6 +26,31 @@ While many companies are transitioning to automation, some users prefer or requi
   <img src="assets/extension-ui.png" />
 </p>
 
+- **Percy Token**: A Percy token is generated when you create a Percy project. The token is a write-only API key that is unique for each project. You can find this on the Project Settings page. 
+<p align="center">
+  <img src="https://www.browserstack.com/docs/static/img/percy-app-percy/get-started/percy-get-token.png" />
+</p>
+
+- **Snapshot Name**: Snapshot name is a field used to specify the name of a snapshot being uploaded to a Percy build. If you do not provide a specific value for the snapshot name in extension, the platform will automatically capture the title of the web page as the default snapshot name.
+
+- **Snapshot Options**: Percy's snapshot options include "widths" for responsive testing, "Percy CSS" to apply custom styling, "scope" for focused element capture, and a "JS" toggle for JavaScript control, allowing tailored visual testing for web applications on various devices and scenarios.
+<p align="center">
+  <img src="assets/snapshot-options.png" />
+</p>
+
+- **Capture Snapshot**: Button is used to capture a snapshot of the current DOM (Document Object Model) of your active webpage. This snapshot is a visual representation of the webpage's content and layout at a specific moment in time, which can be useful for various purposes, including debugging, monitoring, or visual testing.
+
+- **Start Autocapture**: Button will enable autocapture feature, it will start automatically capturing the the snapshot during your end to end test run, whenever a DOM change is detected. This feature reduces the need for manual intervention, ensuring that snapshots are taken as soon as there are relevant changes in the web application, making it particularly valuable for continuous testing and detecting visual regressions.
+
+- **View Snapshots**: This button is used to review the different snapshots captured during your entire end-to-end test run. Clicking this button will take you to a separate page where you can access a list of all the snapshots that have been captured. From this page, you have the flexibility to make edits to the snapshots or delete them before finalizing the testing process. This feature provides a convenient way to inspect, manage, and ensure the quality of captured visual snapshots before they are integrated into your project.
+<p align="center">
+  <img src="assets/view-snapshots.png" />
+</p>
+
+- **Finalize**: This button will is used to finalize the whole test and send the snapshots to the Percy. Once you finalize you will be automatically redirected to the Percy Dashboard.
+
+- **Cancel Build**- The button is used to cancel you whole build. All the snapshots captured will be removed.
+
 ## Getting Started
 
 To begin using the Percy Chrome Extension, follow these straightforward steps:
