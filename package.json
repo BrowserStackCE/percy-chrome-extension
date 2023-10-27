@@ -46,9 +46,6 @@
       "storage",
       "contextMenus",
       "activeTab",
-      "nativeMessaging",
-      "webRequest",
-      "cookies",
       "unlimitedStorage"
     ],
     "commands":{
