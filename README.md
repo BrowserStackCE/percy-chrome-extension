@@ -20,7 +20,7 @@ Manual Quality Assurance (QA) testers play a pivotal role in maintaining applica
 
 
 
-https://github.com/BrowserStackCE/percy-chrome-extension/assets/112229060/af024a14-fffa-463b-998a-eb98d26883be
+https://github.com/BrowserStackCE/percy-chrome-extension/assets/112229060/0fb58494-8baf-474f-82af-20d69e7ba937
 
 
 ## Streamlining Manual QA Workflows
