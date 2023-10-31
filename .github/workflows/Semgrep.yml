@@ -39,7 +39,7 @@ jobs:
       - run: semgrep ci --sarif --output=semgrep.sarif
         env:
             # Add the rules that Semgrep uses by setting the SEMGREP_RULES environment variable. 
-            SEMGREP_RULES: p/default # more at semgrep.dev/explore
+            SEMGREP_RULES: p/cwe-top-25 # more at semgrep.dev/explore
 
       - name: Upload SARIF file for GitHub Advanced Security Dashboard
         uses: github/codeql-action/upload-sarif@6c089f53dd51dc3fc7e599c3cb5356453a52ca9e # v2.20.0
