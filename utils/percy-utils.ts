@@ -1,7 +1,7 @@
 import { it } from "node:test";
-import { PercyBuild } from "~schemas/build";
-import { Preferences, PreferncesSchema } from "~schemas/preferences";
-import { Snapshot } from '~schemas/snapshot'
+import type { PercyBuild } from "~schemas/build";
+import { type Preferences, PreferncesSchema } from "~schemas/preferences";
+import type { Snapshot } from '~schemas/snapshot'
 import { AutoCapture } from "./auto-capture";
 import { LocalStorage, SessionStorage } from "./storage";
 
@@ -130,7 +130,7 @@ export class Percy {
                     // optional
                     environmentInfo: [`${plaformInfo.os}/${plaformInfo.arch}`],
                     clientInfo: `browser-extension/${manifest.version}`,
-                    widths: snapshot.options.widths?.map((w) => Number(w)).filter((w) => w != NaN),
+                    widths: snapshot.options.widths?.map((w) => Number(w)).filter((w) => !Number.isNaN(w)),
                     minHeight: Number(snapshot.options["min-height"] || 0),
                     enableJavaScript: snapshot.options["enable-javascript"],
                     requestHeaders: snapshot.headers

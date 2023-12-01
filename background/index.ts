@@ -75,7 +75,7 @@ AutoCapture.listen((val)=>{
 })
 
 Percy.listen((build)=>{
-    percyEnabled = build != false && build != undefined
+    percyEnabled = build != undefined
     UpdateContextMenusVisibility()
 })
 

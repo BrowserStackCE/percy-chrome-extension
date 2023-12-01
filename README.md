@@ -1,5 +1,5 @@
 # Percy Chrome Extension
-<img src="https://www.svgviewer.dev/static-svgs/14340/percy-icon.svg"  width="150" height="150">  <img src="https://d98b8t1nnulk5.cloudfront.net/production/images/layout/logo-header.png?1469004780"  width="450" height="150">
+<img style="object-fit: contain" src="https://www.svgviewer.dev/static-svgs/14340/percy-icon.svg"  width="150" height="150">  <img style="object-fit: contain" src="https://d98b8t1nnulk5.cloudfront.net/production/images/layout/logo-header.png?1469004780"  width="450" height="150">
 
 The Percy Chrome Extension is a versatile Chrome extension, developed within the Plasmo framework, designed to simplify visual testing and regression testing for your web applications. It offers a practical solution for users who don't have extensive automation setups and for Manual QA testers who want to streamline their visual regression testing processes.
 

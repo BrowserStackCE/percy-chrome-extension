@@ -4,7 +4,7 @@ import { Button, Divider, Form, Input, message, notification, Popconfirm, Space,
 import React, { useEffect, useState } from "react";
 import SnapshotForm from "~components/snapshot.form";
 import { useLocalStorage, useSessionStorage } from "~hooks/use-storage";
-import { PercyBuild } from "~schemas/build";
+import type { PercyBuild } from "~schemas/build";
 import { PreferncesSchema } from "~schemas/preferences";
 import { SnapshotOptionsSchema, SnapshotSchema } from "~schemas/snapshot";
 import { Percy } from "~utils/percy-utils";
@@ -81,7 +81,7 @@ export function CaptureView() {
         <React.Fragment>
             <Form form={form} initialValues={{ options: preferences?.defaultSnapshotOptions, token: build?.token }} layout="vertical">
                 <Form.Item label="Percy Token" name={['token']} >
-                    <Input addonAfter={<Button type='text' onClick={() => SetEditPercyToken(!editPercyToken)} icon={editPercyToken ? <CheckCircleOutlined /> : <EditOutlined />} />} disabled={!editPercyToken} size="large" />
+                    <Input onBlur={() => SetEditPercyToken(!editPercyToken)} addonAfter={<Button type='text' onClick={() => SetEditPercyToken(!editPercyToken)} icon={editPercyToken ? <CheckCircleOutlined /> : <EditOutlined />} />} disabled={!editPercyToken} size="large" />
                 </Form.Item>
                 <SnapshotForm />
             </Form>
@@ -95,8 +95,8 @@ export function CaptureView() {
             <Space className="w-100" direction="vertical" >
                 <Button onClick={actions.viewSnapshots} block size="large" type="dashed" >View Snapshots</Button>
                 <Button loading={finalizing} onClick={actions.finaliseBuild} block size="large" type="primary" >Finalize</Button>
-                <Popconfirm onConfirm={actions.cancelBuild} title="Cancel Build?" description="Are you sure you want to Cancel this build? This cannot be undone.">
-                    <Button block size="large" danger type="text" >Cancel Build</Button>
+                <Popconfirm onConfirm={actions.cancelBuild} title="Clear Build?" description="Are you sure you want to Clear this build? This cannot be undone.">
+                    <Button block size="large" danger type="text" >Clear Build</Button>
                 </Popconfirm>
             </Space>
             <Divider/>

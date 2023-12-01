@@ -4,7 +4,7 @@ import type { PlasmoCSConfig } from "plasmo"
 import { useEffect, useMemo, useState } from "react"
 
 import { useLocalStorage } from "~hooks/use-storage";
-import { Preferences } from "~schemas/preferences";
+import { type Preferences } from "~schemas/preferences";
 import { CaptureSnapshot } from "~utils/capture-snapshot";
 
 export const config: PlasmoCSConfig = {
