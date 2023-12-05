@@ -3,6 +3,17 @@
 
 The Percy Chrome Extension is a versatile Chrome extension, developed within the Plasmo framework, designed to simplify visual testing and regression testing for your web applications. It offers a practical solution for users who don't have extensive automation setups and for Manual QA testers who want to streamline their visual regression testing processes.
 
+## Percy Desktop App
+
+Percy Desktop App is an Electron application designed to enable Percy local servers on your system. Percy is an all-in-one visual testing and review platform that helps teams automate their visual QA process, catch visual bugs, and gain insights into UI changes with each commit. Our goal is to provide you and your team with confidence in the visual integrity of your user interface every time you deploy.
+
+To install the Percy Desktop App, kindly select the appropriate link corresponding to your operating system:
+ - If you are using Windows, please click on the [link](https://github.com/BrowserStackCE/percy-desktop-app/releases/download/v0.0.1/win.percy-desktop-app-0.0.1.Setup.exe) for Windows users.
+ - If you are using macOS, please choose the [link](https://github.com/BrowserStackCE/percy-desktop-app/releases/download/v0.0.1/osx.percy-desktop-app-darwin-x64-0.0.1.zip) designated for macOS.
+ - If you are using Linux, please opt for the [link](https://github.com/BrowserStackCE/percy-desktop-app/releases/download/v0.0.1/linux.percy-desktop-app_0.0.1_amd64.deb) tailored for Linux users.
+
+To know more about Percy Desktop App, please refer [this](https://github.com/BrowserStackCE/percy-desktop-app/blob/develop/README.md) documentation.
+
 ## Introduction
 
 Visual testing is a critical aspect of ensuring the quality and consistency of web applications. However, not all users have the resources or expertise to set up complex automation systems. The Percy Chrome Extension caters to a variety of user groups:
@@ -78,12 +89,6 @@ Percy provides multiple ways to perform the functions mentioned above:
 <p align="center">
   <img src="assets/keyboard-shortcut.png" />
 </p>
-
-## Percy Desktop App
-
-Percy Desktop App is an Electron application designed to enable Percy local servers on your system. Percy is an all-in-one visual testing and review platform that helps teams automate their visual QA process, catch visual bugs, and gain insights into UI changes with each commit. Our goal is to provide you and your team with confidence in the visual integrity of your user interface every time you deploy.
-
-To install the Percy Desktop App, please follow the steps given in [this](https://github.com/BrowserStackCE/percy-desktop-app/blob/develop/README.md) documentation.
 
 ## Getting Started
 
