@@ -47,7 +47,7 @@ While many companies are transitioning to automation, some users prefer or requi
 - **Percy Token**: A Percy token is generated when you create a Percy project. The token is a write-only API key that is unique for each project. You can find this on the Project Settings page. 
 
 <p align="center">
-  <img src="https://www.browserstack.com/docs/static/img/percy-app-percy/get-started/percy-get-token.png" width="800"/>
+  <img src="https://www.browserstack.com/docs/static/img/percy-app-percy/get-started/percy-token.png" width="800"/>
 </p>
 
 - **Snapshot Name**: Snapshot name is a field used to specify the name of a snapshot being uploaded to a Percy build. If you do not provide a specific value for the snapshot name in extension, the platform will automatically capture the title of the web page as the default snapshot name.
