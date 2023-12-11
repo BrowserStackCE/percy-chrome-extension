@@ -5,7 +5,7 @@ The Percy Chrome Extension is a versatile Chrome extension, developed within the
 
 ## Percy Desktop App
 
-Percy Desktop App is an Electron application designed to enable Percy local servers on your system. Percy is an all-in-one visual testing and review platform that helps teams automate their visual QA process, catch visual bugs, and gain insights into UI changes with each commit. Our goal is to provide you and your team with confidence in the visual integrity of your user interface every time you deploy.
+Percy Desktop App is an electron application designed to enable Percy local servers on your system. It works alongside the Percy Chrome Extension. Once the DOM snapshot are captured via extension, they are then sent to cloud via percy-cli for further rendering across different browsers and resolutions. So make sure to enable the desktop app before finalizing the build.
 
 To install the Percy Desktop App, kindly select the appropriate link corresponding to your operating system:
  - If you are using Windows, please click on the [link](https://github.com/BrowserStackCE/percy-desktop-app/releases/download/v0.0.1/win.percy-desktop-app-0.0.1.Setup.exe) for Windows users.
