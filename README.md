@@ -1,7 +1,18 @@
 # Percy Chrome Extension
-<img style="object-fit: contain" src="https://www.svgviewer.dev/static-svgs/14340/percy-icon.svg"  width="150" height="150">  <img style="object-fit: contain" src="https://d98b8t1nnulk5.cloudfront.net/production/images/layout/logo-header.png?1469004780"  width="450" height="150">
+<img style="object-fit: contain" src="https://cdn.freebiesupply.com/logos/large/2x/browserstack-logo-png-transparent.png"  width="150" height="150">&nbsp;&nbsp;&nbsp;&nbsp;<img style="object-fit: contain" src="https://www.svgviewer.dev/static-svgs/14340/percy-icon.svg"  width="150" height="150">  
 
 The Percy Chrome Extension is a versatile Chrome extension, developed within the Plasmo framework, designed to simplify visual testing and regression testing for your web applications. It offers a practical solution for users who don't have extensive automation setups and for Manual QA testers who want to streamline their visual regression testing processes.
+
+## Percy Desktop App
+
+Percy Desktop App is an electron application designed to enable Percy local servers on your system. It works alongside the Percy Chrome Extension. Once the DOM snapshot are captured via extension, they are then sent to cloud via percy-cli for further rendering across different browsers and resolutions. So make sure to enable the desktop app before finalizing the build.
+
+To install the Percy Desktop App, kindly select the appropriate link corresponding to your operating system:
+ - If you are using Windows, please click on the [link](https://github.com/BrowserStackCE/percy-desktop-app/releases/download/v0.0.1/win.percy-desktop-app-0.0.1.Setup.exe) for Windows users.
+ - If you are using macOS, please choose the [link](https://github.com/BrowserStackCE/percy-desktop-app/releases/download/v0.0.1/osx.percy-desktop-app-darwin-x64-0.0.1.zip) designated for macOS.
+ - If you are using Linux, please opt for the [link](https://github.com/BrowserStackCE/percy-desktop-app/releases/download/v0.0.1/linux.percy-desktop-app_0.0.1_amd64.deb) tailored for Linux users.
+
+To know more about Percy Desktop App, please refer [this](https://github.com/BrowserStackCE/percy-desktop-app/blob/develop/README.md) documentation.
 
 ## Introduction
 
@@ -36,7 +47,7 @@ While many companies are transitioning to automation, some users prefer or requi
 - **Percy Token**: A Percy token is generated when you create a Percy project. The token is a write-only API key that is unique for each project. You can find this on the Project Settings page. 
 
 <p align="center">
-  <img src="https://www.browserstack.com/docs/static/img/percy-app-percy/get-started/percy-get-token.png" width="800"/>
+  <img src="assets/percy-token.png" width="800"/>
 </p>
 
 - **Snapshot Name**: Snapshot name is a field used to specify the name of a snapshot being uploaded to a Percy build. If you do not provide a specific value for the snapshot name in extension, the platform will automatically capture the title of the web page as the default snapshot name.
@@ -78,12 +89,6 @@ Percy provides multiple ways to perform the functions mentioned above:
 <p align="center">
   <img src="assets/keyboard-shortcut.png" />
 </p>
-
-## Percy Desktop App
-
-Percy Desktop App is an Electron application designed to enable Percy local servers on your system. Percy is an all-in-one visual testing and review platform that helps teams automate their visual QA process, catch visual bugs, and gain insights into UI changes with each commit. Our goal is to provide you and your team with confidence in the visual integrity of your user interface every time you deploy.
-
-To install the Percy Desktop App, please follow the steps given in [this](https://github.com/BrowserStackCE/percy-desktop-app/blob/develop/README.md) documentation.
 
 ## Getting Started
 
