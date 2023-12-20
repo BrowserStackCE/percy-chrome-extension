@@ -1,7 +1,7 @@
 {
   "name": "percy-extension",
   "displayName": "Percy Web Extension",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Percy Web Extension",
   "author": "BrowserStack Pvt Ltd",
   "scripts": {
