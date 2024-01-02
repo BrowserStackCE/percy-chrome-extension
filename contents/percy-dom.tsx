@@ -1,9 +1,9 @@
 import type { PlasmoCSConfig } from "plasmo"
 import { useMessage } from "@plasmohq/messaging/hook"
-import { SnapshotOptions, SnapshotOptionsSchema } from "~schemas/snapshot"
+import { type SnapshotOptions, SnapshotOptionsSchema } from "~schemas/snapshot"
 import { CaptureSnapshot } from "~utils/capture-snapshot"
 import { useLocalStorage } from "~hooks/use-storage"
-import { PercyBuild } from "~schemas/build"
+import { type PercyBuild } from "~schemas/build"
 
 
 export const config: PlasmoCSConfig = {

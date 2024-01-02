@@ -1,4 +1,4 @@
-import { SnapshotOptions } from "~schemas/snapshot"
+import type { SnapshotOptions } from "~schemas/snapshot"
 import { sendToBackground } from "@plasmohq/messaging"
 import Serialize from '@percy/dom'
 import { message } from "antd"

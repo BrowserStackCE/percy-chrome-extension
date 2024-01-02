@@ -1,5 +1,5 @@
 import type { PlasmoMessaging } from "@plasmohq/messaging"
-import { Snapshot, SnapshotSchema } from "~schemas/snapshot"
+import { type Snapshot, SnapshotSchema } from "~schemas/snapshot"
 import { Percy } from "~utils/percy-utils";
 
 
