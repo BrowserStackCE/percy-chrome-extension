@@ -14,6 +14,14 @@ To install the Percy Desktop App, kindly select the appropriate link correspondi
 
 To know more about Percy Desktop App, please refer [this](https://github.com/BrowserStackCE/percy-desktop-app/blob/develop/README.md) documentation.
 
+### Important:
+
+If you encounter difficulties launching the Percy server using the desktop app on your system, you can alternatively utilize the npm [percy/cli](https://www.npmjs.com/package/@percy/cli) package. Follow the steps below:
+
+1. Install percy/cli: `npm install --save-dev @percy/cli`
+2. Set the Percy token: `export [PERCY_TOKEN]`
+3. Initiate the Percy Server: `npx percy exec:start`
+
 ## Introduction
 
 Visual testing is a critical aspect of ensuring the quality and consistency of web applications. However, not all users have the resources or expertise to set up complex automation systems. The Percy Chrome Extension caters to a variety of user groups:
