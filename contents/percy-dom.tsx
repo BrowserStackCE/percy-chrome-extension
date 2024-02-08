@@ -20,7 +20,7 @@ export default function SnapshotModal() {
                 await CaptureSnapshot(options,req.body?.name)
                 res.send({ success: true })
             } catch (err) {
-                console.log(err)
+                console.error(err)
                 res.send({ success: false, error: err })
             }
         }
