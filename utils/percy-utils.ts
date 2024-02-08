@@ -131,6 +131,7 @@ export class Percy {
                     widths: snapshot.options.widths?.map((w) => Number(w)).filter((w) => !Number.isNaN(w)),
                     minHeight: Number(snapshot.options["min-height"] || 0),
                     enableJavaScript: snapshot.options["enable-javascript"],
+                    enableLayout: snapshot.options['enable-layout'],
                     requestHeaders: snapshot.headers
                 }
                 try {
