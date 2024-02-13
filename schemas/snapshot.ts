@@ -5,7 +5,8 @@ export const SnapshotOptionsSchema = z.object({
     "min-height": z.string().default("1024"),
     "percy-css": z.string().optional(),
     "scope": z.string().optional(),
-    "enable-javascript": z.boolean().default(false)
+    "enable-javascript": z.boolean().default(false),
+    "enable-layout":z.boolean().default(false)
 })
 export const SnapshotSchema = z.object({
     dom: z.any(),
@@ -14,7 +15,8 @@ export const SnapshotSchema = z.object({
     })).default({
         widths: [375, 1280],
         "min-height": "1024",
-        "enable-javascript": false
+        "enable-javascript": false,
+        "enable-layout": false
     }),
     url: z.string().url(),
     headers: z.record(z.string()).optional(),

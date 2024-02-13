@@ -15,7 +15,6 @@ export default function ChromeExtensionOptions() {
     const [discoveryOptions] = Form.useForm()
     const [preferences] = useLocalStorage<Preferences>('preferences')
     useEffect(() => {
-        console.log(preferences)
         if (preferences) {
             snapshotOptions.setFieldsValue({ options: preferences.defaultSnapshotOptions })
             discoveryOptions.setFieldsValue(preferences.discoveryOptions)
