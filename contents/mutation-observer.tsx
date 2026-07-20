@@ -55,13 +55,11 @@ export default function SnapshotModal() {
   useEffect(() => {
     const onCapture = () => {
       if (event) {
-        console.log('mutation-observer','capture emitted')
         CaptureSnapshot(preferences.defaultSnapshotOptions, undefined, event)
         SetEvent(undefined)
       }
     }
     eventEmitter.on('capture', onCapture)
-    console.log('Captur registered')
     return () => {
       eventEmitter.off('capture', onCapture)
     }
@@ -75,7 +73,6 @@ export default function SnapshotModal() {
       }
       if (autoCapture) {
         if (e.type == 'load') {
-          console.log('mutation-observer','load emitted')
           CaptureSnapshot(preferences.defaultSnapshotOptions, undefined, event)
         } else {
           observer.observe(window.document, observerOptions)

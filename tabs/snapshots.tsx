@@ -22,7 +22,6 @@ export default function SnapshotsList() {
         },
         updateSnapshot: () => {
             form.validateFields().then(({ options,name }) => {
-                console.log(options)
                 const snapshot = build.snapshots[modalOpen.name]
                 if (snapshot) {
                     snapshot.options = options
@@ -52,7 +51,6 @@ export default function SnapshotsList() {
             Percy.clearBuild()
         },
         openPreview: (snapshot: Snapshot) => {
-            console.log(snapshot.dom)
             var newWindow = window.open("");
             newWindow.document.write(snapshot.dom.html)
         }

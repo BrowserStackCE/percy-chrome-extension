@@ -40,6 +40,11 @@ SnapshotForm.Options = function () {
             }]} name={["options","enable-javascript"]} label="Enable Javascript" >
                 <Switch />
             </Form.Item>
+            <Form.Item valuePropName="checked" rules={[{
+                required: true
+            }]} name={["options","enable-layout"]} label="Layout Only" >
+                <Switch />
+            </Form.Item>
             <Form.Item name={["options","scope"]} label="Scope" >
                 <Input  />
             </Form.Item>

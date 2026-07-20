@@ -90,7 +90,6 @@ export class Percy {
         percyConfig['percy'] = {
             token: build.token
         }
-        console.log(percyConfig)
         return fetch(`${appUrl}/percy/start`, {
             method: 'POST',
             headers: {
@@ -98,7 +97,6 @@ export class Percy {
             },
             body: JSON.stringify(percyConfig)
         }).then((res) => {
-            res.text().then(console.log)
             return res.status == 200
         }).catch((err) => {
             return false
@@ -133,6 +131,7 @@ export class Percy {
                     widths: snapshot.options.widths?.map((w) => Number(w)).filter((w) => !Number.isNaN(w)),
                     minHeight: Number(snapshot.options["min-height"] || 0),
                     enableJavaScript: snapshot.options["enable-javascript"],
+                    enableLayout: snapshot.options['enable-layout'],
                     requestHeaders: snapshot.headers
                 }
                 try {
@@ -147,13 +146,12 @@ export class Percy {
             if (errors.length == 0) {
                 await Percy.clearBuild()
             }
-            console.log(running)
             chrome.tabs.create({
                 url: buildInfo?.build?.url
             })
             return true;
         } catch (err) {
-            console.log(err)
+            console.error(err)
             return false
         } finally {
             await LocalStorage.set('finalizing', false)
