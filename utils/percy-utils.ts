@@ -1,4 +1,3 @@
-import { it } from "node:test";
 import type { PercyBuild } from "~schemas/build";
 import { type Preferences, PreferncesSchema } from "~schemas/preferences";
 import type { Snapshot } from '~schemas/snapshot'
@@ -57,7 +56,9 @@ export class Percy {
 
     static async sendSnapshot(options: any, params?: any) {
         let query = params ? `?${new URLSearchParams(params)}` : '';
-        return fetch(`${baseurl}/percy/snapshot${query}`, {
+        // routed through the desktop app: percy CLI rejects requests with a
+        // chrome-extension:// Origin, the app forwards them origin-less
+        return fetch(`${appUrl}/percy/snapshot${query}`, {
             body: JSON.stringify(options),
             method: 'POST'
         }).then(async (res) => {
@@ -70,7 +71,9 @@ export class Percy {
     }
 
     static async stopPercy() {
-        return fetch(`${baseurl}/percy/stop`).then((res) => res.status == 200).catch(() => false)
+        // routed through the desktop app (percy CLI rejects cross-origin
+        // requests); the app POSTs percy's /percy/stop for us
+        return fetch(`${appUrl}/percy/stop`, { method: 'POST' }).then((res) => res.status == 200).catch(() => false)
     }
 
     static async startPercy() {
@@ -107,6 +110,11 @@ export class Percy {
 
     static async finalise() {
         await LocalStorage.set('finalizing', true)
+        // Starting percy and uploading snapshots involve fetches that can run
+        // well past 30s, and pending fetches don't reset Chrome's service
+        // worker idle timer — without keepalive pings the worker is killed
+        // mid-finalize. Extension API calls do reset the timer.
+        const keepAlive = setInterval(() => chrome.runtime.getPlatformInfo(), 20_000)
         try {
             const running = await Percy.isEnabled()
             if (!running) {
@@ -156,6 +164,7 @@ export class Percy {
             console.log(err)
             return false
         } finally {
+            clearInterval(keepAlive)
             await LocalStorage.set('finalizing', false)
         }
     }
