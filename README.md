@@ -5,14 +5,17 @@ The Percy Chrome Extension is a versatile Chrome extension, developed within the
 
 ## Percy Desktop App
 
-Percy Desktop App is an electron application designed to enable Percy local servers on your system. It works alongside the Percy Chrome Extension. Once the DOM snapshot are captured via extension, they are then sent to cloud via percy-cli for further rendering across different browsers and resolutions. So make sure to enable the desktop app before finalizing the build.
+Percy Desktop App is a lightweight menu bar application (built with plain Node.js, no Electron) designed to enable Percy local servers on your system. It works alongside the Percy Chrome Extension. Once the DOM snapshots are captured via extension, they are then sent to cloud via percy-cli for further rendering across different browsers and resolutions. So make sure the desktop app is running (look for the Percy icon in your menu bar / system tray) before finalizing the build.
 
-To install the Percy Desktop App, kindly select the appropriate link corresponding to your operating system:
- - If you are using Windows, please click on the [link](https://github.com/BrowserStackCE/percy-desktop-app/releases/download/v0.0.1/win.percy-desktop-app-0.0.1.Setup.exe) for Windows users.
- - If you are using macOS, please choose the [link](https://github.com/BrowserStackCE/percy-desktop-app/releases/download/v0.0.1/osx.percy-desktop-app-darwin-x64-0.0.1.zip) designated for macOS.
- - If you are using Linux, please opt for the [link](https://github.com/BrowserStackCE/percy-desktop-app/releases/download/v0.0.1/linux.percy-desktop-app_0.0.1_amd64.deb) tailored for Linux users.
+To build the app for your operating system:
 
-To know more about Percy Desktop App, please refer [this](https://github.com/BrowserStackCE/percy-desktop-app/blob/develop/README.md) documentation.
+```bash
+cd desktop-app
+npm install
+npm run build:mac     # or build:win / build:linux
+```
+
+Then launch `dist/mac/Percy Desktop App.app` (macOS) or the generated executable for your platform. To know more about Percy Desktop App, please refer to the [desktop-app documentation](desktop-app/README.md).
 
 ### Important:
 

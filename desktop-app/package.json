@@ -1,0 +1,44 @@
+{
+  "name": "percy-desktop-app",
+  "version": "1.0.0",
+  "description": "Desktop menu bar app for the Percy Chrome Extension — starts and stops a local Percy server",
+  "author": "BrowserStack Pvt Ltd",
+  "license": "MIT",
+  "main": "src/index.js",
+  "bin": {
+    "percy-desktop-app": "src/index.js"
+  },
+  "scripts": {
+    "start": "node src/index.js",
+    "build": "node scripts/build.js",
+    "build:mac": "node scripts/build.js mac",
+    "build:win": "node scripts/build.js win",
+    "build:linux": "node scripts/build.js linux"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "adm-zip": "^0.5.10",
+    "systray2": "^2.1.4",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@yao-pkg/pkg": "^5.11.5"
+  },
+  "pkg": {
+    "assets": [
+      "node_modules/systray2/traybin/**/*",
+      "assets/**/*"
+    ]
+  },
+  "keywords": [
+    "percy",
+    "browserstack",
+    "visual-testing"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BrowserStackCE/percy-chrome-extension.git"
+  }
+}
